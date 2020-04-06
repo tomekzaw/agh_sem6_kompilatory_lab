@@ -1,0 +1,81 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ADDASSIGN
+    BREAK
+    COMMENT
+    CONTINUE
+    DIVASSIGN
+    DOTADD
+    DOTDIV
+    DOTMUL
+    DOTSUB
+    ELSE
+    EQ
+    EYE
+    FLOATNUM
+    FOR
+    GTE
+    ID
+    IF
+    INTNUM
+    LTE
+    MULASSIGN
+    NEQ
+    ONES
+    PRINT
+    RETURN
+    STRING
+    SUBASSIGN
+    WHILE
+    ZEROS
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> instructions_opt
+Rule 2     instructions_opt -> instructions
+Rule 3     instructions_opt -> <empty>
+Rule 4     instructions -> instructions instruction
+Rule 5     instructions -> instruction
+
+Terminals, with rules where they appear
+
+ADDASSIGN            : 
+BREAK                : 
+COMMENT              : 
+CONTINUE             : 
+DIVASSIGN            : 
+DOTADD               : 
+DOTDIV               : 
+DOTMUL               : 
+DOTSUB               : 
+ELSE                 : 
+EQ                   : 
+EYE                  : 
+FLOATNUM             : 
+FOR                  : 
+GTE                  : 
+ID                   : 
+IF                   : 
+INTNUM               : 
+LTE                  : 
+MULASSIGN            : 
+NEQ                  : 
+ONES                 : 
+PRINT                : 
+RETURN               : 
+STRING               : 
+SUBASSIGN            : 
+WHILE                : 
+ZEROS                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+instruction          : 4 5
+instructions         : 2 4
+instructions_opt     : 1
+program              : 0
+
