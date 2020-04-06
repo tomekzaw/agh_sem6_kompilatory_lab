@@ -38,6 +38,12 @@ from scanner import lexer
     # exponent sign
     ('123.45e+67', 'FLOATNUM', 123.45e67),
     ('123.45e-67', 'FLOATNUM', 123.45e-67),
+
+    # all at once
+    ('+000123.45e+00067', 'FLOATNUM', 123.45e67),
+    ('-000123.45e+00067', 'FLOATNUM', -123.45e67),
+    ('+000123.45e-00067', 'FLOATNUM', 123.45e-67),
+    ('-000123.45e-00067', 'FLOATNUM', -123.45e-67),
 ))
 def test_valid_number(lexer_input, expected_type, expected_value):
     lexer.input(lexer_input)
