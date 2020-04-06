@@ -54,7 +54,7 @@ t_GTE = r'>='
 t_NEQ = r'!='
 t_EQ = r'=='
 
-t_ignore = r' \t'
+t_ignore = ' \t'
 t_ignore_COMMENT = r'\#.*'
 
 def t_ID(t):
@@ -91,6 +91,10 @@ def t_error(t):
     print("(%d): illegal character '%s'" % (t.lineno, t.value[0]), file=sys.stderr)
     t.lexer.skip(1)
 
+def find_column(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
+
 lexer = lex.lex()
 
 if __name__ == '__main__':
@@ -100,4 +104,6 @@ if __name__ == '__main__':
 
     lexer.input(text)
     for token in lexer:
+        # column = find_column(text, token)
+        # print('(%d,%d): %s(%s)' % (token.lineno, column, token.type, token.value))
         print('(%d): %s(%s)' % (token.lineno, token.type, token.value))

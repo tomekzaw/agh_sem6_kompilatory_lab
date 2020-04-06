@@ -19,7 +19,7 @@ def test_compare_stdout(name, capsys):
     """
     current_path = Path(__file__).parent
 
-    script_path = current_path.parent / 'scanner.py'
+    script_path = current_path.parent.parent / 'scanner.py'
     input_path = current_path / 'resources' / 'compare_stdout' / 'input' / name
     completed = subprocess.run(['python', script_path, input_path], capture_output=True)
     actual_stdout = completed.stdout.decode().replace('\r\n', '\n')
