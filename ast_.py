@@ -85,16 +85,20 @@ class UnaryExpr(Node):
     expr: Any
 
 @dataclass
-class IntNum(Node):
+class Constant(Node):
     value: Any
 
 @dataclass
-class FloatNum(Node):
-    value: Any
+class IntNum(Constant):
+    pass
 
 @dataclass
-class String(Node):
-    value: Any
+class FloatNum(Constant):
+    pass
+
+@dataclass
+class String(Constant):
+    pass
 
 @dataclass
 class Matrix(Node):
