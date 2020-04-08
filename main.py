@@ -3,9 +3,11 @@ from scanner import lexer, find_column
 from Mparser import parser
 
 if __name__ == '__main__':
-    path = sys.argv[1] if len(sys.argv) > 1 else 'example1.m'
-    with open(path, 'r') as f:
-        text = f.read()
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'r') as f:
+            text = f.read()
+    else:
+        text = sys.stdin.read()
 
     # lexer.input(text)
     # for token in lexer:

@@ -18,14 +18,6 @@ from scanner import lexer
     ('1.e67', 'FLOATNUM', 1e67),
     ('.45e67', 'FLOATNUM', 0.45e67),
 
-    # sign
-    ('+0', 'INTNUM', 0),
-    ('-0', 'INTNUM', 0),
-    ('+123', 'INTNUM', 123),
-    ('-123', 'INTNUM', -123),
-    ('+123.45', 'FLOATNUM', 123.45),
-    ('-123.45', 'FLOATNUM', -123.45),
-
     # leading zeros
     ('00', 'INTNUM', 0),
     ('0123', 'INTNUM', 123),
@@ -40,10 +32,8 @@ from scanner import lexer
     ('123.45e-67', 'FLOATNUM', 123.45e-67),
 
     # all at once
-    ('+000123.45e+00067', 'FLOATNUM', 123.45e67),
-    ('-000123.45e+00067', 'FLOATNUM', -123.45e67),
-    ('+000123.45e-00067', 'FLOATNUM', 123.45e-67),
-    ('-000123.45e-00067', 'FLOATNUM', -123.45e-67),
+    ('000123.45e+00067', 'FLOATNUM', 123.45e67),
+    ('000123.45e-00067', 'FLOATNUM', 123.45e-67),
 ))
 def test_valid_number(lexer_input, expected_type, expected_value):
     lexer.input(lexer_input)
