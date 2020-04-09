@@ -111,3 +111,23 @@ def test_double_transpose(text):
             )
         ])
     )
+
+
+def test_precedence_transpose_over_unary_minus():
+    text = "foo = -A';"
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            Assignment(
+                '=',
+                Variable('foo'),
+                UnaryExpr(
+                    '-',
+                    UnaryExpr(
+                        "'",
+                        Variable('A')
+                    )
+                )
+            )
+        ])
+    )
