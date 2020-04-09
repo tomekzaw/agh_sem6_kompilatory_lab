@@ -14,6 +14,10 @@ class Instructions(Node):
     instructions: Any
 
 @dataclass
+class EmptyInstruction(Node):
+    pass
+
+@dataclass
 class If(Node):
     condition: Any
     instruction_if: Any
