@@ -68,3 +68,46 @@ def test_unary_vs_binary_minus(text):
             )
         ])
     )
+
+
+@pytest.mark.parametrize('text', (
+    "foo = A';",
+    "foo = A ';",
+))
+def test_transpose(text):
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            Assignment(
+                '=',
+                Variable('foo'),
+                UnaryExpr(
+                    "'",
+                    Variable('A')
+                )
+            )
+        ])
+    )
+
+@pytest.mark.parametrize('text', (
+    "foo = A'';",
+    "foo = A' ';",
+    "foo = A ' ';",
+))
+def test_double_transpose(text):
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            Assignment(
+                '=',
+                Variable('foo'),
+                UnaryExpr(
+                    "'",
+                    UnaryExpr(
+                        "'",
+                        Variable('A')
+                    )
+                )
+            )
+        ])
+    )
