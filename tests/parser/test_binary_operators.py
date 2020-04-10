@@ -4,6 +4,33 @@ from Mparser import parser
 from ast_ import *
 
 
+@pytest.mark.parametrize('expr_op', ('+', '-', '*', '/', '.+', '.-', '.*', './'))
+@pytest.mark.parametrize('comp_op', ('<', '>', '<=', '>=', '==', '!='))
+def test_precedence_expression_op_over_comparision_op(expr_op, comp_op):
+    text = f"if (a {expr_op} b {comp_op} c {expr_op} d);"
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            If(
+                Condition(
+                    comp_op,
+                    BinExpr(
+                        expr_op,
+                        Variable('a'),
+                        Variable('b')
+                    ),
+                    BinExpr(
+                        expr_op,
+                        Variable('c'),
+                        Variable('d')
+                    )
+                ),
+                EmptyInstruction()
+            )
+        ])
+    )
+
+
 @pytest.mark.parametrize('add_op', ('+', '-', '.+', '.-'))
 @pytest.mark.parametrize('mul_op', ('*', '/', '.*', './'))
 def test_precedence_mul_op_over_add_op(add_op, mul_op):
