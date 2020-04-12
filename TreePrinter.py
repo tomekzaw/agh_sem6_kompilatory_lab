@@ -23,6 +23,10 @@ class TreePrinter:
         for instruction in self.instructions:
             instruction.printTree(indent)
 
+    # @addToClass(AST.EmptyInstruction)
+    # def printTree(self, indent=0):
+    #     pass
+
     @addToClass(AST.If)
     def printTree(self, indent=0):
         iprint('IF', indent)
@@ -113,14 +117,14 @@ class TreePrinter:
     def printTree(self, indent=0):
         iprint(str(self.value), indent)
 
-    @addToClass(AST.Matrix)
-    def printTree(self, indent=0):
-        iprint('MATRIX', indent)
-        # iprint('VECTOR', indent)
-        for row in self.rows:
-            # iprint('VECTOR', indent)
-            for element in row:
-                element.printTree(indent+1)
+    # @addToClass(AST.Matrix)
+    # def printTree(self, indent=0):
+    #     iprint('MATRIX', indent)
+    #     # iprint('VECTOR', indent)
+    #     for row in self.rows:
+    #         # iprint('VECTOR', indent)
+    #         for element in row:
+    #             element.printTree(indent+1)
 
     @addToClass(AST.Vector)
     def printTree(self, indent=0):
