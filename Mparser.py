@@ -3,7 +3,7 @@
 import sys
 import ply.yacc as yacc
 from scanner import tokens, lexer, find_tok_column
-from ast_ import *   # ast collides with pytest
+from AST import *   # ast collides with pytest
 
 precedence = (
     ('nonassoc', 'IFX'),

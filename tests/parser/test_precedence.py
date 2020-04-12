@@ -1,6 +1,6 @@
 import pytest
 from Mparser import parser
-from ast_ import *
+from AST import *
 
 
 def test_precedence_transpose_over_unary_minus():

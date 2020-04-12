@@ -1,7 +1,7 @@
 import pytest
 from itertools import chain, product
 from Mparser import parser
-from ast_ import *
+from AST import *
 
 
 @pytest.mark.parametrize('op1, op2', chain(

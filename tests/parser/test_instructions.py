@@ -1,5 +1,5 @@
 from Mparser import parser
-from ast_ import *
+from AST import *
 
 
 def test_empty_program():

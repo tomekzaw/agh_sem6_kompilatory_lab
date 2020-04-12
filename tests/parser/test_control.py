@@ -1,6 +1,6 @@
 import pytest
 from Mparser import parser
-from ast_ import *
+from AST import *
 
 
 @pytest.mark.parametrize('text, node', (

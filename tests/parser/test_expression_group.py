@@ -1,7 +1,7 @@
 import pytest
 from itertools import product
 from Mparser import parser
-from ast_ import *
+from AST import *
 
 
 def test_expression_group_unary():
