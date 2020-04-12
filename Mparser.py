@@ -3,7 +3,8 @@
 import sys
 import ply.yacc as yacc
 from scanner import tokens, lexer, find_tok_column
-from AST import *   # ast collides with pytest
+from AST import *
+from TreePrinter import TreePrinter
 
 precedence = (
     ('nonassoc', 'IFX'),
@@ -113,9 +114,9 @@ def p_lvalue_variable(p):
     """lvalue : variable"""
     p[0] = p[1]
 
-def p_lvalue_matrix_index(p):
-    """lvalue : variable '[' expression ',' expression ']'"""
-    p[0] = MatrixElement(p[1], p[3], p[5])
+def p_lvalue_reference(p):
+    """lvalue : variable '[' expression_list ']'"""
+    p[0] = Reference(p[1], p[3])
 
 def p_assignment_operator(p):
     """assignment_operator : '='
@@ -176,6 +177,10 @@ def p_expression_list_empty(p):
     """expression_list : """
     p[0] = []
 
+def p_vector(p):
+    """expression : '[' expression_list ']'"""
+    p[0] = Vector(p[2])
+
 def p_matrix(p):
     """expression : '[' matrix_rows ']'"""
     p[0] = Matrix(p[2])
@@ -225,18 +230,4 @@ if __name__ == '__main__':
         text = sys.stdin.read()
 
     ast = parser.parse(text, lexer=lexer)
-
-    def print_ast(node, indent=0):
-        print('| ' * indent, end='')
-        if isinstance(node, Node):
-            print(node.__class__.__name__)
-            for child in node.__dict__.values():
-                print_ast(child, indent+1)
-        elif isinstance(node, list):
-            print('list')
-            for child in node:
-                print_ast(child, indent+1)
-        else:
-            print(str(node))
-
-    print_ast(ast)
+    ast.printTree()

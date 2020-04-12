@@ -90,7 +90,7 @@ def test_dangling_else_iiaea():
     )
 
     outer_if = ast.instructions.instructions[0]
-    inner_if = outer_if.instruction_if
+    inner_if = outer_if.instruction_then
     assert outer_if.instruction_else is None
     assert inner_if.instruction_else is not None
 
@@ -126,7 +126,7 @@ def test_dangling_else_iiaeiaea():
     )
 
     if1 = ast.instructions.instructions[0]
-    if2 = if1.instruction_if
+    if2 = if1.instruction_then
     if3 = if2.instruction_else
 
     assert if1.instruction_else is None

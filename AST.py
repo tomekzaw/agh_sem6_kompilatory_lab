@@ -13,14 +13,14 @@ class Program(Node):
 class Instructions(Node):
     instructions: Any
 
-@dataclass
-class EmptyInstruction(Node):
-    pass
+# @dataclass
+# class EmptyInstruction(Node):
+#     pass
 
 @dataclass
 class If(Node):
     condition: Any
-    instruction_if: Any
+    instruction_then: Any
     instruction_else: Any = None
 
 @dataclass
@@ -28,6 +28,11 @@ class For(Node):
     variable: Any
     range_: Any
     instruction: Any
+
+@dataclass
+class Range(Node):
+    start: Any
+    end: Any
 
 @dataclass
 class While(Node):
@@ -39,15 +44,6 @@ class Condition(Node):
     op: Any
     left: Any
     right: Any
-
-@dataclass
-class Variable(Node):
-    name: Any
-
-@dataclass
-class Range(Node):
-    start: Any
-    end: Any
 
 @dataclass
 class Break(Node):
@@ -66,16 +62,19 @@ class Print(Node):
     args: Any
 
 @dataclass
-class MatrixElement(Node):
-    variable: Any
-    row: Any
-    col: Any
-
-@dataclass
 class Assignment(Node):
     op: Any
     left: Any
     right: Any
+
+@dataclass
+class Variable(Node):
+    name: Any
+
+@dataclass
+class Reference(Node):
+    variable: Any
+    indices: Any
 
 @dataclass
 class BinExpr(Node):
@@ -106,22 +105,28 @@ class String(Constant):
 
 @dataclass
 class Matrix(Node):
-    rows: Any
+    rows: list
 
 @dataclass
-class Eye(Node):
+class Vector(Node):
+    elements: list
+
+@dataclass
+class MatrixSpecialFunction(Node):
     rows: Any
     cols: Any = None
 
 @dataclass
-class Zeros(Node):
-    rows: Any
-    cols: Any = None
+class Eye(MatrixSpecialFunction):
+    pass
 
 @dataclass
-class Ones(Node):
-    rows: Any
-    cols: Any = None
+class Zeros(MatrixSpecialFunction):
+    pass
+
+@dataclass
+class Ones(MatrixSpecialFunction):
+    pass
 
 @dataclass
 class Error(Node):

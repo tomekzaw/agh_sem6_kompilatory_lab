@@ -26,10 +26,9 @@ def test_assignment_to_matrix_index(assign_op):
         Instructions([
             Assignment(
                 assign_op,
-                MatrixElement(
+                Reference(
                     Variable('A'),
-                    IntNum(1),
-                    IntNum(2)
+                    [IntNum(1), IntNum(2)]
                 ),
                 IntNum(42)
             )
