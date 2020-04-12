@@ -173,17 +173,17 @@ def p_vector(p):
     """expression : '[' expression_list ']'"""
     p[0] = Vector(p[2])
 
-def p_matrix(p):
-    """expression : '[' matrix_rows ']'"""
-    p[0] = Matrix(p[2])
+# def p_matrix(p):
+#     """expression : '[' matrix_rows ']'"""
+#     p[0] = Matrix(p[2])
 
-def p_matrix_rows(p):
-    """matrix_rows : matrix_rows ';' expression_list"""
-    p[0] = p[1] + [p[3]]
+# def p_matrix_rows(p):
+#     """matrix_rows : matrix_rows ';' expression_list"""
+#     p[0] = p[1] + [p[3]]
 
-def p_matrix_rows_single(p):
-    """matrix_rows : expression_list"""
-    p[0] = [p[1]]
+# def p_matrix_rows_single(p):
+#     """matrix_rows : expression_list"""
+#     p[0] = [p[1]]
 
 def p_eye_1(p):
     """expression : EYE '(' expression ')'"""

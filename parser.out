@@ -51,28 +51,25 @@ Rule 45    expression_list -> expression_list , expression
 Rule 46    expression_list -> expression
 Rule 47    expression_list -> <empty>
 Rule 48    expression -> [ expression_list ]
-Rule 49    expression -> [ matrix_rows ]
-Rule 50    matrix_rows -> matrix_rows ; expression_list
-Rule 51    matrix_rows -> expression_list
-Rule 52    expression -> EYE ( expression )
-Rule 53    expression -> EYE ( expression , expression )
-Rule 54    expression -> ZEROS ( expression )
-Rule 55    expression -> ZEROS ( expression , expression )
-Rule 56    expression -> ONES ( expression )
-Rule 57    expression -> ONES ( expression , expression )
+Rule 49    expression -> EYE ( expression )
+Rule 50    expression -> EYE ( expression , expression )
+Rule 51    expression -> ZEROS ( expression )
+Rule 52    expression -> ZEROS ( expression , expression )
+Rule 53    expression -> ONES ( expression )
+Rule 54    expression -> ONES ( expression , expression )
 
 Terminals, with rules where they appear
 
 '                    : 39
-(                    : 5 6 8 40 52 53 54 55 56 57
-)                    : 5 6 8 40 52 53 54 55 56 57
+(                    : 5 6 8 40 49 50 51 52 53 54
+)                    : 5 6 8 40 49 50 51 52 53 54
 *                    : 32
 +                    : 30
-,                    : 45 53 55 57
+,                    : 45 50 52 54
 -                    : 31 38
 /                    : 33
 :                    : 16
-;                    : 17 50
+;                    : 17
 <                    : 13
 =                    : 7 23
 >                    : 14
@@ -86,7 +83,7 @@ DOTMUL               : 36
 DOTSUB               : 35
 ELSE                 : 6
 EQ                   : 9
-EYE                  : 52 53
+EYE                  : 49 50
 FLOATNUM             : 43
 FOR                  : 7
 GTE                  : 12
@@ -96,15 +93,15 @@ INTNUM               : 42
 LTE                  : 11
 MULASSIGN            : 26
 NEQ                  : 10
-ONES                 : 56 57
+ONES                 : 53 54
 PRINT                : 22
 RETURN               : 20 21
 STRING               : 44
 SUBASSIGN            : 25
 WHILE                : 8
-ZEROS                : 54 55
-[                    : 29 48 49
-]                    : 29 48 49
+ZEROS                : 51 52
+[                    : 29 48
+]                    : 29 48
 error                : 
 {                    : 4
 }                    : 4
@@ -112,12 +109,11 @@ error                :
 Nonterminals, with rules where they appear
 
 condition            : 5 6 8
-expression           : 9 9 10 10 11 11 12 12 13 13 14 14 16 16 21 23 24 25 26 27 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 39 40 45 46 52 53 53 54 55 55 56 57 57
-expression_list      : 22 29 45 48 50 51
+expression           : 9 9 10 10 11 11 12 12 13 13 14 14 16 16 21 23 24 25 26 27 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 39 40 45 46 49 50 50 51 52 52 53 54 54
+expression_list      : 22 29 45 48
 instruction          : 2 5 6 6 7 8
 instructions         : 1 2 4
 lvalue               : 23 24 25 26 27 41
-matrix_rows          : 49 50
 program              : 0
 range                : 7
 statement            : 17
@@ -335,13 +331,12 @@ state 12
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -384,13 +379,12 @@ state 13
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -535,13 +529,12 @@ state 17
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -591,13 +584,12 @@ state 19
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -645,13 +637,12 @@ state 20
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -734,13 +725,12 @@ state 23
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -779,13 +769,12 @@ state 24
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -948,12 +937,9 @@ state 28
 state 29
 
     (48) expression -> [ . expression_list ]
-    (49) expression -> [ . matrix_rows ]
     (45) expression_list -> . expression_list , expression
     (46) expression_list -> . expression
     (47) expression_list -> .
-    (50) matrix_rows -> . matrix_rows ; expression_list
-    (51) matrix_rows -> . expression_list
     (30) expression -> . expression + expression
     (31) expression -> . expression - expression
     (32) expression -> . expression * expression
@@ -970,20 +956,18 @@ state 29
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
 
     ]               reduce using rule 47 (expression_list -> .)
     ,               reduce using rule 47 (expression_list -> .)
-    ;               reduce using rule 47 (expression_list -> .)
     -               shift and go to state 23
     (               shift and go to state 24
     INTNUM          shift and go to state 26
@@ -996,33 +980,32 @@ state 29
     ID              shift and go to state 15
 
     expression_list                shift and go to state 57
-    matrix_rows                    shift and go to state 58
     expression                     shift and go to state 34
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
 state 30
 
-    (52) expression -> EYE . ( expression )
-    (53) expression -> EYE . ( expression , expression )
+    (49) expression -> EYE . ( expression )
+    (50) expression -> EYE . ( expression , expression )
 
-    (               shift and go to state 59
+    (               shift and go to state 58
 
 
 state 31
 
-    (54) expression -> ZEROS . ( expression )
-    (55) expression -> ZEROS . ( expression , expression )
+    (51) expression -> ZEROS . ( expression )
+    (52) expression -> ZEROS . ( expression , expression )
 
-    (               shift and go to state 60
+    (               shift and go to state 59
 
 
 state 32
 
-    (56) expression -> ONES . ( expression )
-    (57) expression -> ONES . ( expression , expression )
+    (53) expression -> ONES . ( expression )
+    (54) expression -> ONES . ( expression , expression )
 
-    (               shift and go to state 61
+    (               shift and go to state 60
 
 
 state 33
@@ -1031,7 +1014,7 @@ state 33
     (45) expression_list -> expression_list . , expression
 
     ;               reduce using rule 22 (statement -> PRINT expression_list .)
-    ,               shift and go to state 62
+    ,               shift and go to state 61
 
 
 state 34
@@ -1080,13 +1063,12 @@ state 35
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1103,7 +1085,7 @@ state 35
     ID              shift and go to state 15
 
     lvalue                         shift and go to state 25
-    expression                     shift and go to state 63
+    expression                     shift and go to state 62
     variable                       shift and go to state 7
 
 state 36
@@ -1125,13 +1107,12 @@ state 36
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1148,7 +1129,7 @@ state 36
     ID              shift and go to state 15
 
     lvalue                         shift and go to state 25
-    expression                     shift and go to state 64
+    expression                     shift and go to state 63
     variable                       shift and go to state 7
 
 state 37
@@ -1170,13 +1151,12 @@ state 37
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1193,7 +1173,7 @@ state 37
     ID              shift and go to state 15
 
     lvalue                         shift and go to state 25
-    expression                     shift and go to state 65
+    expression                     shift and go to state 64
     variable                       shift and go to state 7
 
 state 38
@@ -1215,13 +1195,12 @@ state 38
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1238,7 +1217,7 @@ state 38
     ID              shift and go to state 15
 
     lvalue                         shift and go to state 25
-    expression                     shift and go to state 66
+    expression                     shift and go to state 65
     variable                       shift and go to state 7
 
 state 39
@@ -1260,13 +1239,12 @@ state 39
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1283,7 +1261,7 @@ state 39
     ID              shift and go to state 15
 
     lvalue                         shift and go to state 25
-    expression                     shift and go to state 67
+    expression                     shift and go to state 66
     variable                       shift and go to state 7
 
 state 40
@@ -1309,7 +1287,7 @@ state 41
     (5) instruction -> IF ( condition . ) instruction
     (6) instruction -> IF ( condition . ) instruction ELSE instruction
 
-    )               shift and go to state 68
+    )               shift and go to state 67
 
 
 state 42
@@ -1330,12 +1308,12 @@ state 42
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    EQ              shift and go to state 69
-    NEQ             shift and go to state 70
-    LTE             shift and go to state 71
-    GTE             shift and go to state 72
-    <               shift and go to state 73
-    >               shift and go to state 74
+    EQ              shift and go to state 68
+    NEQ             shift and go to state 69
+    LTE             shift and go to state 70
+    GTE             shift and go to state 71
+    <               shift and go to state 72
+    >               shift and go to state 73
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -1367,13 +1345,12 @@ state 43
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1390,8 +1367,8 @@ state 43
     ID              shift and go to state 15
 
     variable                       shift and go to state 7
-    range                          shift and go to state 75
-    expression                     shift and go to state 76
+    range                          shift and go to state 74
+    expression                     shift and go to state 75
     lvalue                         shift and go to state 25
 
 state 44
@@ -1399,15 +1376,15 @@ state 44
     (29) lvalue -> variable [ expression_list . ]
     (45) expression_list -> expression_list . , expression
 
-    ]               shift and go to state 77
-    ,               shift and go to state 62
+    ]               shift and go to state 76
+    ,               shift and go to state 61
 
 
 state 45
 
     (8) instruction -> WHILE ( condition . ) instruction
 
-    )               shift and go to state 78
+    )               shift and go to state 77
 
 
 state 46
@@ -1429,13 +1406,12 @@ state 46
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1451,7 +1427,7 @@ state 46
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 79
+    expression                     shift and go to state 78
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1474,13 +1450,12 @@ state 47
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1496,7 +1471,7 @@ state 47
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 80
+    expression                     shift and go to state 79
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1519,13 +1494,12 @@ state 48
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1541,7 +1515,7 @@ state 48
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 81
+    expression                     shift and go to state 80
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1564,13 +1538,12 @@ state 49
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1586,7 +1559,7 @@ state 49
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 82
+    expression                     shift and go to state 81
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1609,13 +1582,12 @@ state 50
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1631,7 +1603,7 @@ state 50
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 83
+    expression                     shift and go to state 82
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1654,13 +1626,12 @@ state 51
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1676,7 +1647,7 @@ state 51
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 84
+    expression                     shift and go to state 83
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1699,13 +1670,12 @@ state 52
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1721,7 +1691,7 @@ state 52
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 85
+    expression                     shift and go to state 84
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1744,13 +1714,12 @@ state 53
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1766,7 +1735,7 @@ state 53
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 86
+    expression                     shift and go to state 85
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
@@ -1872,7 +1841,7 @@ state 56
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    )               shift and go to state 87
+    )               shift and go to state 86
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -1888,29 +1857,15 @@ state 57
 
     (48) expression -> [ expression_list . ]
     (45) expression_list -> expression_list . , expression
-    (51) matrix_rows -> expression_list .
 
-  ! shift/reduce conflict for ] resolved as shift
-    ]               shift and go to state 88
-    ,               shift and go to state 62
-    ;               reduce using rule 51 (matrix_rows -> expression_list .)
-
-  ! ]               [ reduce using rule 51 (matrix_rows -> expression_list .) ]
+    ]               shift and go to state 87
+    ,               shift and go to state 61
 
 
 state 58
 
-    (49) expression -> [ matrix_rows . ]
-    (50) matrix_rows -> matrix_rows . ; expression_list
-
-    ]               shift and go to state 89
-    ;               shift and go to state 90
-
-
-state 59
-
-    (52) expression -> EYE ( . expression )
-    (53) expression -> EYE ( . expression , expression )
+    (49) expression -> EYE ( . expression )
+    (50) expression -> EYE ( . expression , expression )
     (30) expression -> . expression + expression
     (31) expression -> . expression - expression
     (32) expression -> . expression * expression
@@ -1927,13 +1882,146 @@ state 59
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 88
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 59
+
+    (51) expression -> ZEROS ( . expression )
+    (52) expression -> ZEROS ( . expression , expression )
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 89
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 60
+
+    (53) expression -> ONES ( . expression )
+    (54) expression -> ONES ( . expression , expression )
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 90
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 61
+
+    (45) expression_list -> expression_list , . expression
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -1953,144 +2041,7 @@ state 59
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
-state 60
-
-    (54) expression -> ZEROS ( . expression )
-    (55) expression -> ZEROS ( . expression , expression )
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 92
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 61
-
-    (56) expression -> ONES ( . expression )
-    (57) expression -> ONES ( . expression , expression )
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 93
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
 state 62
-
-    (45) expression_list -> expression_list , . expression
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 94
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 63
 
     (23) statement -> lvalue = expression .
     (30) expression -> expression . + expression
@@ -2115,7 +2066,7 @@ state 63
     '               shift and go to state 54
 
 
-state 64
+state 63
 
     (24) statement -> lvalue ADDASSIGN expression .
     (30) expression -> expression . + expression
@@ -2140,7 +2091,7 @@ state 64
     '               shift and go to state 54
 
 
-state 65
+state 64
 
     (25) statement -> lvalue SUBASSIGN expression .
     (30) expression -> expression . + expression
@@ -2165,7 +2116,7 @@ state 65
     '               shift and go to state 54
 
 
-state 66
+state 65
 
     (26) statement -> lvalue MULASSIGN expression .
     (30) expression -> expression . + expression
@@ -2190,7 +2141,7 @@ state 66
     '               shift and go to state 54
 
 
-state 67
+state 66
 
     (27) statement -> lvalue DIVASSIGN expression .
     (30) expression -> expression . + expression
@@ -2215,7 +2166,7 @@ state 67
     '               shift and go to state 54
 
 
-state 68
+state 67
 
     (5) instruction -> IF ( condition ) . instruction
     (6) instruction -> IF ( condition ) . instruction ELSE instruction
@@ -2249,12 +2200,12 @@ state 68
     PRINT           shift and go to state 13
     ID              shift and go to state 15
 
-    instruction                    shift and go to state 95
+    instruction                    shift and go to state 92
     variable                       shift and go to state 7
     statement                      shift and go to state 9
     lvalue                         shift and go to state 14
 
-state 69
+state 68
 
     (9) condition -> expression EQ . expression
     (30) expression -> . expression + expression
@@ -2273,13 +2224,144 @@ state 69
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 93
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 69
+
+    (10) condition -> expression NEQ . expression
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 94
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 70
+
+    (11) condition -> expression LTE . expression
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 95
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 71
+
+    (12) condition -> expression GTE . expression
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -2299,9 +2381,9 @@ state 69
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
-state 70
+state 72
 
-    (10) condition -> expression NEQ . expression
+    (13) condition -> expression < . expression
     (30) expression -> . expression + expression
     (31) expression -> . expression - expression
     (32) expression -> . expression * expression
@@ -2318,13 +2400,12 @@ state 70
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -2344,9 +2425,9 @@ state 70
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
-state 71
+state 73
 
-    (11) condition -> expression LTE . expression
+    (14) condition -> expression > . expression
     (30) expression -> . expression + expression
     (31) expression -> . expression - expression
     (32) expression -> . expression * expression
@@ -2363,13 +2444,12 @@ state 71
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -2389,142 +2469,7 @@ state 71
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
-state 72
-
-    (12) condition -> expression GTE . expression
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 99
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 73
-
-    (13) condition -> expression < . expression
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 100
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
 state 74
-
-    (14) condition -> expression > . expression
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 101
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 75
 
     (7) instruction -> FOR variable = range . instruction
     (4) instruction -> . { instructions }
@@ -2558,11 +2503,11 @@ state 75
     ID              shift and go to state 15
 
     variable                       shift and go to state 7
-    instruction                    shift and go to state 102
+    instruction                    shift and go to state 99
     statement                      shift and go to state 9
     lvalue                         shift and go to state 14
 
-state 76
+state 75
 
     (16) range -> expression . : expression
     (30) expression -> expression . + expression
@@ -2575,7 +2520,7 @@ state 76
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    :               shift and go to state 103
+    :               shift and go to state 100
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -2587,7 +2532,7 @@ state 76
     '               shift and go to state 54
 
 
-state 77
+state 76
 
     (29) lvalue -> variable [ expression_list ] .
 
@@ -2627,7 +2572,7 @@ state 77
     ID              reduce using rule 29 (lvalue -> variable [ expression_list ] .)
 
 
-state 78
+state 77
 
     (8) instruction -> WHILE ( condition ) . instruction
     (4) instruction -> . { instructions }
@@ -2660,12 +2605,12 @@ state 78
     PRINT           shift and go to state 13
     ID              shift and go to state 15
 
-    instruction                    shift and go to state 104
+    instruction                    shift and go to state 101
     variable                       shift and go to state 7
     statement                      shift and go to state 9
     lvalue                         shift and go to state 14
 
-state 79
+state 78
 
     (30) expression -> expression + expression .
     (30) expression -> expression . + expression
@@ -2719,7 +2664,7 @@ state 79
   ! DOTSUB          [ shift and go to state 51 ]
 
 
-state 80
+state 79
 
     (31) expression -> expression - expression .
     (30) expression -> expression . + expression
@@ -2773,7 +2718,7 @@ state 80
   ! DOTSUB          [ shift and go to state 51 ]
 
 
-state 81
+state 80
 
     (32) expression -> expression * expression .
     (30) expression -> expression . + expression
@@ -2827,7 +2772,7 @@ state 81
   ! DOTDIV          [ shift and go to state 53 ]
 
 
-state 82
+state 81
 
     (33) expression -> expression / expression .
     (30) expression -> expression . + expression
@@ -2881,7 +2826,7 @@ state 82
   ! DOTDIV          [ shift and go to state 53 ]
 
 
-state 83
+state 82
 
     (34) expression -> expression DOTADD expression .
     (30) expression -> expression . + expression
@@ -2935,7 +2880,7 @@ state 83
   ! DOTSUB          [ shift and go to state 51 ]
 
 
-state 84
+state 83
 
     (35) expression -> expression DOTSUB expression .
     (30) expression -> expression . + expression
@@ -2989,7 +2934,7 @@ state 84
   ! DOTSUB          [ shift and go to state 51 ]
 
 
-state 85
+state 84
 
     (36) expression -> expression DOTMUL expression .
     (30) expression -> expression . + expression
@@ -3043,7 +2988,7 @@ state 85
   ! DOTDIV          [ shift and go to state 53 ]
 
 
-state 86
+state 85
 
     (37) expression -> expression DOTDIV expression .
     (30) expression -> expression . + expression
@@ -3097,7 +3042,7 @@ state 86
   ! DOTDIV          [ shift and go to state 53 ]
 
 
-state 87
+state 86
 
     (40) expression -> ( expression ) .
 
@@ -3132,7 +3077,7 @@ state 87
     ID              reduce using rule 40 (expression -> ( expression ) .)
 
 
-state 88
+state 87
 
     (48) expression -> [ expression_list ] .
 
@@ -3167,97 +3112,64 @@ state 88
     ID              reduce using rule 48 (expression -> [ expression_list ] .)
 
 
+state 88
+
+    (49) expression -> EYE ( expression . )
+    (50) expression -> EYE ( expression . , expression )
+    (30) expression -> expression . + expression
+    (31) expression -> expression . - expression
+    (32) expression -> expression . * expression
+    (33) expression -> expression . / expression
+    (34) expression -> expression . DOTADD expression
+    (35) expression -> expression . DOTSUB expression
+    (36) expression -> expression . DOTMUL expression
+    (37) expression -> expression . DOTDIV expression
+    (39) expression -> expression . '
+
+    )               shift and go to state 102
+    ,               shift and go to state 103
+    +               shift and go to state 46
+    -               shift and go to state 47
+    *               shift and go to state 48
+    /               shift and go to state 49
+    DOTADD          shift and go to state 50
+    DOTSUB          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTDIV          shift and go to state 53
+    '               shift and go to state 54
+
+
 state 89
 
-    (49) expression -> [ matrix_rows ] .
+    (51) expression -> ZEROS ( expression . )
+    (52) expression -> ZEROS ( expression . , expression )
+    (30) expression -> expression . + expression
+    (31) expression -> expression . - expression
+    (32) expression -> expression . * expression
+    (33) expression -> expression . / expression
+    (34) expression -> expression . DOTADD expression
+    (35) expression -> expression . DOTSUB expression
+    (36) expression -> expression . DOTMUL expression
+    (37) expression -> expression . DOTDIV expression
+    (39) expression -> expression . '
 
-    +               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    -               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    *               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    /               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    DOTADD          reduce using rule 49 (expression -> [ matrix_rows ] .)
-    DOTSUB          reduce using rule 49 (expression -> [ matrix_rows ] .)
-    DOTMUL          reduce using rule 49 (expression -> [ matrix_rows ] .)
-    DOTDIV          reduce using rule 49 (expression -> [ matrix_rows ] .)
-    '               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    ;               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    ,               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    EQ              reduce using rule 49 (expression -> [ matrix_rows ] .)
-    NEQ             reduce using rule 49 (expression -> [ matrix_rows ] .)
-    LTE             reduce using rule 49 (expression -> [ matrix_rows ] .)
-    GTE             reduce using rule 49 (expression -> [ matrix_rows ] .)
-    <               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    >               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    ]               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    )               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    :               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    {               reduce using rule 49 (expression -> [ matrix_rows ] .)
-    IF              reduce using rule 49 (expression -> [ matrix_rows ] .)
-    FOR             reduce using rule 49 (expression -> [ matrix_rows ] .)
-    WHILE           reduce using rule 49 (expression -> [ matrix_rows ] .)
-    BREAK           reduce using rule 49 (expression -> [ matrix_rows ] .)
-    CONTINUE        reduce using rule 49 (expression -> [ matrix_rows ] .)
-    RETURN          reduce using rule 49 (expression -> [ matrix_rows ] .)
-    PRINT           reduce using rule 49 (expression -> [ matrix_rows ] .)
-    ID              reduce using rule 49 (expression -> [ matrix_rows ] .)
+    )               shift and go to state 104
+    ,               shift and go to state 105
+    +               shift and go to state 46
+    -               shift and go to state 47
+    *               shift and go to state 48
+    /               shift and go to state 49
+    DOTADD          shift and go to state 50
+    DOTSUB          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTDIV          shift and go to state 53
+    '               shift and go to state 54
 
 
 state 90
 
-    (50) matrix_rows -> matrix_rows ; . expression_list
-    (45) expression_list -> . expression_list , expression
-    (46) expression_list -> . expression
-    (47) expression_list -> .
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    ,               reduce using rule 47 (expression_list -> .)
-    ]               reduce using rule 47 (expression_list -> .)
-    ;               reduce using rule 47 (expression_list -> .)
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression_list                shift and go to state 105
-    expression                     shift and go to state 34
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 91
-
-    (52) expression -> EYE ( expression . )
-    (53) expression -> EYE ( expression . , expression )
+    (53) expression -> ONES ( expression . )
+    (54) expression -> ONES ( expression . , expression )
     (30) expression -> expression . + expression
     (31) expression -> expression . - expression
     (32) expression -> expression . * expression
@@ -3281,61 +3193,7 @@ state 91
     '               shift and go to state 54
 
 
-state 92
-
-    (54) expression -> ZEROS ( expression . )
-    (55) expression -> ZEROS ( expression . , expression )
-    (30) expression -> expression . + expression
-    (31) expression -> expression . - expression
-    (32) expression -> expression . * expression
-    (33) expression -> expression . / expression
-    (34) expression -> expression . DOTADD expression
-    (35) expression -> expression . DOTSUB expression
-    (36) expression -> expression . DOTMUL expression
-    (37) expression -> expression . DOTDIV expression
-    (39) expression -> expression . '
-
-    )               shift and go to state 108
-    ,               shift and go to state 109
-    +               shift and go to state 46
-    -               shift and go to state 47
-    *               shift and go to state 48
-    /               shift and go to state 49
-    DOTADD          shift and go to state 50
-    DOTSUB          shift and go to state 51
-    DOTMUL          shift and go to state 52
-    DOTDIV          shift and go to state 53
-    '               shift and go to state 54
-
-
-state 93
-
-    (56) expression -> ONES ( expression . )
-    (57) expression -> ONES ( expression . , expression )
-    (30) expression -> expression . + expression
-    (31) expression -> expression . - expression
-    (32) expression -> expression . * expression
-    (33) expression -> expression . / expression
-    (34) expression -> expression . DOTADD expression
-    (35) expression -> expression . DOTSUB expression
-    (36) expression -> expression . DOTMUL expression
-    (37) expression -> expression . DOTDIV expression
-    (39) expression -> expression . '
-
-    )               shift and go to state 110
-    ,               shift and go to state 111
-    +               shift and go to state 46
-    -               shift and go to state 47
-    *               shift and go to state 48
-    /               shift and go to state 49
-    DOTADD          shift and go to state 50
-    DOTSUB          shift and go to state 51
-    DOTMUL          shift and go to state 52
-    DOTDIV          shift and go to state 53
-    '               shift and go to state 54
-
-
-state 94
+state 91
 
     (45) expression_list -> expression_list , expression .
     (30) expression -> expression . + expression
@@ -3362,7 +3220,7 @@ state 94
     '               shift and go to state 54
 
 
-state 95
+state 92
 
     (5) instruction -> IF ( condition ) instruction .
     (6) instruction -> IF ( condition ) instruction . ELSE instruction
@@ -3378,12 +3236,12 @@ state 95
     ID              reduce using rule 5 (instruction -> IF ( condition ) instruction .)
     $end            reduce using rule 5 (instruction -> IF ( condition ) instruction .)
     }               reduce using rule 5 (instruction -> IF ( condition ) instruction .)
-    ELSE            shift and go to state 112
+    ELSE            shift and go to state 108
 
   ! ELSE            [ reduce using rule 5 (instruction -> IF ( condition ) instruction .) ]
 
 
-state 96
+state 93
 
     (9) condition -> expression EQ expression .
     (30) expression -> expression . + expression
@@ -3408,7 +3266,7 @@ state 96
     '               shift and go to state 54
 
 
-state 97
+state 94
 
     (10) condition -> expression NEQ expression .
     (30) expression -> expression . + expression
@@ -3433,7 +3291,7 @@ state 97
     '               shift and go to state 54
 
 
-state 98
+state 95
 
     (11) condition -> expression LTE expression .
     (30) expression -> expression . + expression
@@ -3458,7 +3316,7 @@ state 98
     '               shift and go to state 54
 
 
-state 99
+state 96
 
     (12) condition -> expression GTE expression .
     (30) expression -> expression . + expression
@@ -3483,7 +3341,7 @@ state 99
     '               shift and go to state 54
 
 
-state 100
+state 97
 
     (13) condition -> expression < expression .
     (30) expression -> expression . + expression
@@ -3508,7 +3366,7 @@ state 100
     '               shift and go to state 54
 
 
-state 101
+state 98
 
     (14) condition -> expression > expression .
     (30) expression -> expression . + expression
@@ -3533,7 +3391,7 @@ state 101
     '               shift and go to state 54
 
 
-state 102
+state 99
 
     (7) instruction -> FOR variable = range instruction .
 
@@ -3551,7 +3409,7 @@ state 102
     ELSE            reduce using rule 7 (instruction -> FOR variable = range instruction .)
 
 
-state 103
+state 100
 
     (16) range -> expression : . expression
     (30) expression -> . expression + expression
@@ -3570,13 +3428,12 @@ state 103
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -3592,11 +3449,11 @@ state 103
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 113
+    expression                     shift and go to state 109
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
-state 104
+state 101
 
     (8) instruction -> WHILE ( condition ) instruction .
 
@@ -3614,54 +3471,202 @@ state 104
     ELSE            reduce using rule 8 (instruction -> WHILE ( condition ) instruction .)
 
 
+state 102
+
+    (49) expression -> EYE ( expression ) .
+
+    +               reduce using rule 49 (expression -> EYE ( expression ) .)
+    -               reduce using rule 49 (expression -> EYE ( expression ) .)
+    *               reduce using rule 49 (expression -> EYE ( expression ) .)
+    /               reduce using rule 49 (expression -> EYE ( expression ) .)
+    DOTADD          reduce using rule 49 (expression -> EYE ( expression ) .)
+    DOTSUB          reduce using rule 49 (expression -> EYE ( expression ) .)
+    DOTMUL          reduce using rule 49 (expression -> EYE ( expression ) .)
+    DOTDIV          reduce using rule 49 (expression -> EYE ( expression ) .)
+    '               reduce using rule 49 (expression -> EYE ( expression ) .)
+    ;               reduce using rule 49 (expression -> EYE ( expression ) .)
+    ,               reduce using rule 49 (expression -> EYE ( expression ) .)
+    EQ              reduce using rule 49 (expression -> EYE ( expression ) .)
+    NEQ             reduce using rule 49 (expression -> EYE ( expression ) .)
+    LTE             reduce using rule 49 (expression -> EYE ( expression ) .)
+    GTE             reduce using rule 49 (expression -> EYE ( expression ) .)
+    <               reduce using rule 49 (expression -> EYE ( expression ) .)
+    >               reduce using rule 49 (expression -> EYE ( expression ) .)
+    ]               reduce using rule 49 (expression -> EYE ( expression ) .)
+    )               reduce using rule 49 (expression -> EYE ( expression ) .)
+    :               reduce using rule 49 (expression -> EYE ( expression ) .)
+    {               reduce using rule 49 (expression -> EYE ( expression ) .)
+    IF              reduce using rule 49 (expression -> EYE ( expression ) .)
+    FOR             reduce using rule 49 (expression -> EYE ( expression ) .)
+    WHILE           reduce using rule 49 (expression -> EYE ( expression ) .)
+    BREAK           reduce using rule 49 (expression -> EYE ( expression ) .)
+    CONTINUE        reduce using rule 49 (expression -> EYE ( expression ) .)
+    RETURN          reduce using rule 49 (expression -> EYE ( expression ) .)
+    PRINT           reduce using rule 49 (expression -> EYE ( expression ) .)
+    ID              reduce using rule 49 (expression -> EYE ( expression ) .)
+
+
+state 103
+
+    (50) expression -> EYE ( expression , . expression )
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
+
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 110
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
+
+state 104
+
+    (51) expression -> ZEROS ( expression ) .
+
+    +               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    -               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    *               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    /               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    DOTADD          reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    DOTSUB          reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    DOTMUL          reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    DOTDIV          reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    '               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    ;               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    ,               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    EQ              reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    NEQ             reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    LTE             reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    GTE             reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    <               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    >               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    ]               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    )               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    :               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    {               reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    IF              reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    FOR             reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    WHILE           reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    BREAK           reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    CONTINUE        reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    RETURN          reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    PRINT           reduce using rule 51 (expression -> ZEROS ( expression ) .)
+    ID              reduce using rule 51 (expression -> ZEROS ( expression ) .)
+
+
 state 105
 
-    (50) matrix_rows -> matrix_rows ; expression_list .
-    (45) expression_list -> expression_list . , expression
+    (52) expression -> ZEROS ( expression , . expression )
+    (30) expression -> . expression + expression
+    (31) expression -> . expression - expression
+    (32) expression -> . expression * expression
+    (33) expression -> . expression / expression
+    (34) expression -> . expression DOTADD expression
+    (35) expression -> . expression DOTSUB expression
+    (36) expression -> . expression DOTMUL expression
+    (37) expression -> . expression DOTDIV expression
+    (38) expression -> . - expression
+    (39) expression -> . expression '
+    (40) expression -> . ( expression )
+    (41) expression -> . lvalue
+    (42) expression -> . INTNUM
+    (43) expression -> . FLOATNUM
+    (44) expression -> . STRING
+    (48) expression -> . [ expression_list ]
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
+    (28) lvalue -> . variable
+    (29) lvalue -> . variable [ expression_list ]
+    (15) variable -> . ID
 
-    ]               reduce using rule 50 (matrix_rows -> matrix_rows ; expression_list .)
-    ;               reduce using rule 50 (matrix_rows -> matrix_rows ; expression_list .)
-    ,               shift and go to state 62
+    -               shift and go to state 23
+    (               shift and go to state 24
+    INTNUM          shift and go to state 26
+    FLOATNUM        shift and go to state 27
+    STRING          shift and go to state 28
+    [               shift and go to state 29
+    EYE             shift and go to state 30
+    ZEROS           shift and go to state 31
+    ONES            shift and go to state 32
+    ID              shift and go to state 15
 
+    expression                     shift and go to state 111
+    lvalue                         shift and go to state 25
+    variable                       shift and go to state 7
 
 state 106
 
-    (52) expression -> EYE ( expression ) .
+    (53) expression -> ONES ( expression ) .
 
-    +               reduce using rule 52 (expression -> EYE ( expression ) .)
-    -               reduce using rule 52 (expression -> EYE ( expression ) .)
-    *               reduce using rule 52 (expression -> EYE ( expression ) .)
-    /               reduce using rule 52 (expression -> EYE ( expression ) .)
-    DOTADD          reduce using rule 52 (expression -> EYE ( expression ) .)
-    DOTSUB          reduce using rule 52 (expression -> EYE ( expression ) .)
-    DOTMUL          reduce using rule 52 (expression -> EYE ( expression ) .)
-    DOTDIV          reduce using rule 52 (expression -> EYE ( expression ) .)
-    '               reduce using rule 52 (expression -> EYE ( expression ) .)
-    ;               reduce using rule 52 (expression -> EYE ( expression ) .)
-    ,               reduce using rule 52 (expression -> EYE ( expression ) .)
-    EQ              reduce using rule 52 (expression -> EYE ( expression ) .)
-    NEQ             reduce using rule 52 (expression -> EYE ( expression ) .)
-    LTE             reduce using rule 52 (expression -> EYE ( expression ) .)
-    GTE             reduce using rule 52 (expression -> EYE ( expression ) .)
-    <               reduce using rule 52 (expression -> EYE ( expression ) .)
-    >               reduce using rule 52 (expression -> EYE ( expression ) .)
-    ]               reduce using rule 52 (expression -> EYE ( expression ) .)
-    )               reduce using rule 52 (expression -> EYE ( expression ) .)
-    :               reduce using rule 52 (expression -> EYE ( expression ) .)
-    {               reduce using rule 52 (expression -> EYE ( expression ) .)
-    IF              reduce using rule 52 (expression -> EYE ( expression ) .)
-    FOR             reduce using rule 52 (expression -> EYE ( expression ) .)
-    WHILE           reduce using rule 52 (expression -> EYE ( expression ) .)
-    BREAK           reduce using rule 52 (expression -> EYE ( expression ) .)
-    CONTINUE        reduce using rule 52 (expression -> EYE ( expression ) .)
-    RETURN          reduce using rule 52 (expression -> EYE ( expression ) .)
-    PRINT           reduce using rule 52 (expression -> EYE ( expression ) .)
-    ID              reduce using rule 52 (expression -> EYE ( expression ) .)
+    +               reduce using rule 53 (expression -> ONES ( expression ) .)
+    -               reduce using rule 53 (expression -> ONES ( expression ) .)
+    *               reduce using rule 53 (expression -> ONES ( expression ) .)
+    /               reduce using rule 53 (expression -> ONES ( expression ) .)
+    DOTADD          reduce using rule 53 (expression -> ONES ( expression ) .)
+    DOTSUB          reduce using rule 53 (expression -> ONES ( expression ) .)
+    DOTMUL          reduce using rule 53 (expression -> ONES ( expression ) .)
+    DOTDIV          reduce using rule 53 (expression -> ONES ( expression ) .)
+    '               reduce using rule 53 (expression -> ONES ( expression ) .)
+    ;               reduce using rule 53 (expression -> ONES ( expression ) .)
+    ,               reduce using rule 53 (expression -> ONES ( expression ) .)
+    EQ              reduce using rule 53 (expression -> ONES ( expression ) .)
+    NEQ             reduce using rule 53 (expression -> ONES ( expression ) .)
+    LTE             reduce using rule 53 (expression -> ONES ( expression ) .)
+    GTE             reduce using rule 53 (expression -> ONES ( expression ) .)
+    <               reduce using rule 53 (expression -> ONES ( expression ) .)
+    >               reduce using rule 53 (expression -> ONES ( expression ) .)
+    ]               reduce using rule 53 (expression -> ONES ( expression ) .)
+    )               reduce using rule 53 (expression -> ONES ( expression ) .)
+    :               reduce using rule 53 (expression -> ONES ( expression ) .)
+    {               reduce using rule 53 (expression -> ONES ( expression ) .)
+    IF              reduce using rule 53 (expression -> ONES ( expression ) .)
+    FOR             reduce using rule 53 (expression -> ONES ( expression ) .)
+    WHILE           reduce using rule 53 (expression -> ONES ( expression ) .)
+    BREAK           reduce using rule 53 (expression -> ONES ( expression ) .)
+    CONTINUE        reduce using rule 53 (expression -> ONES ( expression ) .)
+    RETURN          reduce using rule 53 (expression -> ONES ( expression ) .)
+    PRINT           reduce using rule 53 (expression -> ONES ( expression ) .)
+    ID              reduce using rule 53 (expression -> ONES ( expression ) .)
 
 
 state 107
 
-    (53) expression -> EYE ( expression , . expression )
+    (54) expression -> ONES ( expression , . expression )
     (30) expression -> . expression + expression
     (31) expression -> . expression - expression
     (32) expression -> . expression * expression
@@ -3678,13 +3683,12 @@ state 107
     (43) expression -> . FLOATNUM
     (44) expression -> . STRING
     (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
+    (49) expression -> . EYE ( expression )
+    (50) expression -> . EYE ( expression , expression )
+    (51) expression -> . ZEROS ( expression )
+    (52) expression -> . ZEROS ( expression , expression )
+    (53) expression -> . ONES ( expression )
+    (54) expression -> . ONES ( expression , expression )
     (28) lvalue -> . variable
     (29) lvalue -> . variable [ expression_list ]
     (15) variable -> . ID
@@ -3700,171 +3704,11 @@ state 107
     ONES            shift and go to state 32
     ID              shift and go to state 15
 
-    expression                     shift and go to state 114
+    expression                     shift and go to state 112
     lvalue                         shift and go to state 25
     variable                       shift and go to state 7
 
 state 108
-
-    (54) expression -> ZEROS ( expression ) .
-
-    +               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    -               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    *               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    /               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    DOTADD          reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    DOTSUB          reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    DOTMUL          reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    DOTDIV          reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    '               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    ;               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    ,               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    EQ              reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    NEQ             reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    LTE             reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    GTE             reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    <               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    >               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    ]               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    )               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    :               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    {               reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    IF              reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    FOR             reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    WHILE           reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    BREAK           reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    CONTINUE        reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    RETURN          reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    PRINT           reduce using rule 54 (expression -> ZEROS ( expression ) .)
-    ID              reduce using rule 54 (expression -> ZEROS ( expression ) .)
-
-
-state 109
-
-    (55) expression -> ZEROS ( expression , . expression )
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 115
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 110
-
-    (56) expression -> ONES ( expression ) .
-
-    +               reduce using rule 56 (expression -> ONES ( expression ) .)
-    -               reduce using rule 56 (expression -> ONES ( expression ) .)
-    *               reduce using rule 56 (expression -> ONES ( expression ) .)
-    /               reduce using rule 56 (expression -> ONES ( expression ) .)
-    DOTADD          reduce using rule 56 (expression -> ONES ( expression ) .)
-    DOTSUB          reduce using rule 56 (expression -> ONES ( expression ) .)
-    DOTMUL          reduce using rule 56 (expression -> ONES ( expression ) .)
-    DOTDIV          reduce using rule 56 (expression -> ONES ( expression ) .)
-    '               reduce using rule 56 (expression -> ONES ( expression ) .)
-    ;               reduce using rule 56 (expression -> ONES ( expression ) .)
-    ,               reduce using rule 56 (expression -> ONES ( expression ) .)
-    EQ              reduce using rule 56 (expression -> ONES ( expression ) .)
-    NEQ             reduce using rule 56 (expression -> ONES ( expression ) .)
-    LTE             reduce using rule 56 (expression -> ONES ( expression ) .)
-    GTE             reduce using rule 56 (expression -> ONES ( expression ) .)
-    <               reduce using rule 56 (expression -> ONES ( expression ) .)
-    >               reduce using rule 56 (expression -> ONES ( expression ) .)
-    ]               reduce using rule 56 (expression -> ONES ( expression ) .)
-    )               reduce using rule 56 (expression -> ONES ( expression ) .)
-    :               reduce using rule 56 (expression -> ONES ( expression ) .)
-    {               reduce using rule 56 (expression -> ONES ( expression ) .)
-    IF              reduce using rule 56 (expression -> ONES ( expression ) .)
-    FOR             reduce using rule 56 (expression -> ONES ( expression ) .)
-    WHILE           reduce using rule 56 (expression -> ONES ( expression ) .)
-    BREAK           reduce using rule 56 (expression -> ONES ( expression ) .)
-    CONTINUE        reduce using rule 56 (expression -> ONES ( expression ) .)
-    RETURN          reduce using rule 56 (expression -> ONES ( expression ) .)
-    PRINT           reduce using rule 56 (expression -> ONES ( expression ) .)
-    ID              reduce using rule 56 (expression -> ONES ( expression ) .)
-
-
-state 111
-
-    (57) expression -> ONES ( expression , . expression )
-    (30) expression -> . expression + expression
-    (31) expression -> . expression - expression
-    (32) expression -> . expression * expression
-    (33) expression -> . expression / expression
-    (34) expression -> . expression DOTADD expression
-    (35) expression -> . expression DOTSUB expression
-    (36) expression -> . expression DOTMUL expression
-    (37) expression -> . expression DOTDIV expression
-    (38) expression -> . - expression
-    (39) expression -> . expression '
-    (40) expression -> . ( expression )
-    (41) expression -> . lvalue
-    (42) expression -> . INTNUM
-    (43) expression -> . FLOATNUM
-    (44) expression -> . STRING
-    (48) expression -> . [ expression_list ]
-    (49) expression -> . [ matrix_rows ]
-    (52) expression -> . EYE ( expression )
-    (53) expression -> . EYE ( expression , expression )
-    (54) expression -> . ZEROS ( expression )
-    (55) expression -> . ZEROS ( expression , expression )
-    (56) expression -> . ONES ( expression )
-    (57) expression -> . ONES ( expression , expression )
-    (28) lvalue -> . variable
-    (29) lvalue -> . variable [ expression_list ]
-    (15) variable -> . ID
-
-    -               shift and go to state 23
-    (               shift and go to state 24
-    INTNUM          shift and go to state 26
-    FLOATNUM        shift and go to state 27
-    STRING          shift and go to state 28
-    [               shift and go to state 29
-    EYE             shift and go to state 30
-    ZEROS           shift and go to state 31
-    ONES            shift and go to state 32
-    ID              shift and go to state 15
-
-    expression                     shift and go to state 116
-    lvalue                         shift and go to state 25
-    variable                       shift and go to state 7
-
-state 112
 
     (6) instruction -> IF ( condition ) instruction ELSE . instruction
     (4) instruction -> . { instructions }
@@ -3897,12 +3741,12 @@ state 112
     PRINT           shift and go to state 13
     ID              shift and go to state 15
 
-    instruction                    shift and go to state 117
+    instruction                    shift and go to state 113
     variable                       shift and go to state 7
     statement                      shift and go to state 9
     lvalue                         shift and go to state 14
 
-state 113
+state 109
 
     (16) range -> expression : expression .
     (30) expression -> expression . + expression
@@ -3935,9 +3779,9 @@ state 113
     '               shift and go to state 54
 
 
-state 114
+state 110
 
-    (53) expression -> EYE ( expression , expression . )
+    (50) expression -> EYE ( expression , expression . )
     (30) expression -> expression . + expression
     (31) expression -> expression . - expression
     (32) expression -> expression . * expression
@@ -3948,7 +3792,7 @@ state 114
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    )               shift and go to state 118
+    )               shift and go to state 114
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -3960,9 +3804,9 @@ state 114
     '               shift and go to state 54
 
 
-state 115
+state 111
 
-    (55) expression -> ZEROS ( expression , expression . )
+    (52) expression -> ZEROS ( expression , expression . )
     (30) expression -> expression . + expression
     (31) expression -> expression . - expression
     (32) expression -> expression . * expression
@@ -3973,7 +3817,7 @@ state 115
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    )               shift and go to state 119
+    )               shift and go to state 115
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -3985,9 +3829,9 @@ state 115
     '               shift and go to state 54
 
 
-state 116
+state 112
 
-    (57) expression -> ONES ( expression , expression . )
+    (54) expression -> ONES ( expression , expression . )
     (30) expression -> expression . + expression
     (31) expression -> expression . - expression
     (32) expression -> expression . * expression
@@ -3998,7 +3842,7 @@ state 116
     (37) expression -> expression . DOTDIV expression
     (39) expression -> expression . '
 
-    )               shift and go to state 120
+    )               shift and go to state 116
     +               shift and go to state 46
     -               shift and go to state 47
     *               shift and go to state 48
@@ -4010,7 +3854,7 @@ state 116
     '               shift and go to state 54
 
 
-state 117
+state 113
 
     (6) instruction -> IF ( condition ) instruction ELSE instruction .
 
@@ -4028,111 +3872,107 @@ state 117
     ELSE            reduce using rule 6 (instruction -> IF ( condition ) instruction ELSE instruction .)
 
 
-state 118
+state 114
 
-    (53) expression -> EYE ( expression , expression ) .
+    (50) expression -> EYE ( expression , expression ) .
 
-    +               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    -               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    *               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    /               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    DOTADD          reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    DOTSUB          reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    DOTMUL          reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    DOTDIV          reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    '               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    ;               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    ,               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    EQ              reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    NEQ             reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    LTE             reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    GTE             reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    <               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    >               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    ]               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    )               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    :               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    {               reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    IF              reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    FOR             reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    WHILE           reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    BREAK           reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    CONTINUE        reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    RETURN          reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    PRINT           reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-    ID              reduce using rule 53 (expression -> EYE ( expression , expression ) .)
-
-
-state 119
-
-    (55) expression -> ZEROS ( expression , expression ) .
-
-    +               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    -               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    *               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    /               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    DOTADD          reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    DOTSUB          reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    DOTMUL          reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    DOTDIV          reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    '               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    ;               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    ,               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    EQ              reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    NEQ             reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    LTE             reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    GTE             reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    <               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    >               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    ]               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    )               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    :               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    {               reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    IF              reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    FOR             reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    WHILE           reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    BREAK           reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    CONTINUE        reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    RETURN          reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    PRINT           reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
-    ID              reduce using rule 55 (expression -> ZEROS ( expression , expression ) .)
+    +               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    -               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    *               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    /               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    DOTADD          reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    DOTSUB          reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    DOTMUL          reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    DOTDIV          reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    '               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    ;               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    ,               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    EQ              reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    NEQ             reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    LTE             reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    GTE             reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    <               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    >               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    ]               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    )               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    :               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    {               reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    IF              reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    FOR             reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    WHILE           reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    BREAK           reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    CONTINUE        reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    RETURN          reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    PRINT           reduce using rule 50 (expression -> EYE ( expression , expression ) .)
+    ID              reduce using rule 50 (expression -> EYE ( expression , expression ) .)
 
 
-state 120
+state 115
 
-    (57) expression -> ONES ( expression , expression ) .
+    (52) expression -> ZEROS ( expression , expression ) .
 
-    +               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    -               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    *               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    /               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    DOTADD          reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    DOTSUB          reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    DOTMUL          reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    DOTDIV          reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    '               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    ;               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    ,               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    EQ              reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    NEQ             reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    LTE             reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    GTE             reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    <               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    >               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    ]               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    )               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    :               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    {               reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    IF              reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    FOR             reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    WHILE           reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    BREAK           reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    CONTINUE        reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    RETURN          reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    PRINT           reduce using rule 57 (expression -> ONES ( expression , expression ) .)
-    ID              reduce using rule 57 (expression -> ONES ( expression , expression ) .)
+    +               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    -               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    *               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    /               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    DOTADD          reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    DOTSUB          reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    DOTMUL          reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    DOTDIV          reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    '               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    ;               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    ,               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    EQ              reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    NEQ             reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    LTE             reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    GTE             reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    <               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    >               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    ]               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    )               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    :               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    {               reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    IF              reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    FOR             reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    WHILE           reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    BREAK           reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    CONTINUE        reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    RETURN          reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    PRINT           reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
+    ID              reduce using rule 52 (expression -> ZEROS ( expression , expression ) .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for ] in state 57 resolved as shift
+
+state 116
+
+    (54) expression -> ONES ( expression , expression ) .
+
+    +               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    -               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    *               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    /               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    DOTADD          reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    DOTSUB          reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    DOTMUL          reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    DOTDIV          reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    '               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    ;               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    ,               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    EQ              reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    NEQ             reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    LTE             reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    GTE             reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    <               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    >               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    ]               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    )               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    :               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    {               reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    IF              reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    FOR             reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    WHILE           reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    BREAK           reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    CONTINUE        reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    RETURN          reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    PRINT           reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+    ID              reduce using rule 54 (expression -> ONES ( expression , expression ) .)
+
