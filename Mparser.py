@@ -62,17 +62,13 @@ def p_instruction_while(p):
     p[0] = While(p[3], p[5])
 
 def p_condition(p):
-    """condition : expression comparision_operator expression"""
+    """condition : expression EQ expression
+                 | expression NEQ expression
+                 | expression LTE expression
+                 | expression GTE expression
+                 | expression '<' expression
+                 | expression '>' expression"""
     p[0] = Condition(p[2], p[1], p[3])
-
-def p_comparision_operator(p):
-    """comparision_operator : EQ
-                            | NEQ
-                            | LTE
-                            | GTE
-                            | '<'
-                            | '>'"""
-    p[0] = p[1]
 
 def p_variable(p):
     """variable : ID"""
@@ -107,7 +103,11 @@ def p_statement_print(p):
     p[0] = Print(p[2])
 
 def p_statement_assignment(p):
-    """statement : lvalue assignment_operator expression"""
+    """statement : lvalue '=' expression
+                 | lvalue ADDASSIGN expression
+                 | lvalue SUBASSIGN expression
+                 | lvalue MULASSIGN expression
+                 | lvalue DIVASSIGN expression"""
     p[0] = Assignment(p[2], p[1], p[3])
 
 def p_lvalue_variable(p):
@@ -117,14 +117,6 @@ def p_lvalue_variable(p):
 def p_lvalue_reference(p):
     """lvalue : variable '[' expression_list ']'"""
     p[0] = Reference(p[1], p[3])
-
-def p_assignment_operator(p):
-    """assignment_operator : '='
-                           | ADDASSIGN
-                           | SUBASSIGN
-                           | MULASSIGN
-                           | DIVASSIGN"""
-    p[0] = p[1]
 
 def p_expression_binary(p):
     """expression : expression '+' expression
