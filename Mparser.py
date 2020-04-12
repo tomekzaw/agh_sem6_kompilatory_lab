@@ -11,6 +11,7 @@ precedence = (
     ('nonassoc', 'ELSE'),
     ('nonassoc', '=', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN'),
     ('nonassoc', '<', '>', 'LTE', 'GTE', 'EQ', 'NEQ'),
+    ('nonassoc', ':'),
     ('left', '+', '-', 'DOTADD', 'DOTSUB'),
     ('left', '*', '/', 'DOTMUL', 'DOTDIV'),
     ('right', 'UMINUS'),
@@ -143,6 +144,10 @@ def p_expression_group(p):
 
 def p_expression_lvalue(p):
     """expression : lvalue"""
+    p[0] = p[1]
+
+def p_expression_range(p):
+    """expression : range"""
     p[0] = p[1]
 
 def p_expression_intnum(p):
