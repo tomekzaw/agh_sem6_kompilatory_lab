@@ -1,6 +1,7 @@
 import sys
 from scanner import lexer, find_column
 from Mparser import parser
+from TreePrinter import TreePrinter
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -15,4 +16,5 @@ if __name__ == '__main__':
     #     # print('(%d,%d): %s(%s)' % (token.lineno, column, token.type, token.value))
     #     print('(%d): %s(%s)' % (token.lineno, token.type, token.value))
 
-    parser.parse(text, lexer=lexer)
+    ast = parser.parse(text, lexer=lexer)
+    ast.printTree()

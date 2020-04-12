@@ -122,3 +122,7 @@ class Zeros(Node):
 class Ones(Node):
     rows: Any
     cols: Any = None
+
+@dataclass
+class Error(Node):
+    pass
