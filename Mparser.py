@@ -40,9 +40,9 @@ def p_instruction_block(p):
     """instruction : '{' instructions '}'"""
     p[0] = p[2]
 
-def p_instruction_empty(p):
-    """instruction : ';' """
-    p[0] = EmptyInstruction()
+# def p_instruction_empty(p):
+#     """instruction : ';' """
+#     p[0] = EmptyInstruction()
 
 def p_instruction_if(p):
     """instruction : IF '(' condition ')' instruction %prec IFX"""

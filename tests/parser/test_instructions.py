@@ -36,7 +36,17 @@ def test_multiple_instructions():
     )
 
 
-def test_instructions_blocks():
+def test_empty_instruction_block():
+    text = "{}"
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            Instructions([])
+        ])
+    )
+
+
+def test_instruction_block_nested():
     text = """
     {
         {

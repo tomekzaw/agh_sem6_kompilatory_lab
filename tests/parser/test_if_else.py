@@ -3,6 +3,69 @@ from Mparser import parser
 from ast_ import *
 
 
+def test_if():
+    text = "if (a < b) break;"
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            If(
+                Condition(
+                    '<',
+                    Variable('a'),
+                    Variable('b')
+                ),
+                Break()
+            )
+        ])
+    )
+
+
+def test_if_else():
+    text = "if (a < b) break; else continue;"
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            If(
+                Condition(
+                    '<',
+                    Variable('a'),
+                    Variable('b')
+                ),
+                Break(),
+                Continue()
+            )
+        ])
+    )
+
+
+def test_nested_if():
+    text = """
+    if (a < b)
+        if (c < d)
+            break;
+    """
+    ast = parser.parse(text)
+    assert ast == Program(
+        Instructions([
+            If(
+                Condition(
+                    '<',
+                    Variable('a'),
+                    Variable('b')
+                ),
+                If(
+                    Condition(
+                        '<',
+                        Variable('c'),
+                        Variable('d')
+                    ),
+                    Break()
+                )
+            )
+        ])
+    )
+
+
 def test_dangling_else_iiaea():
     text = """
     if (a < b)
@@ -69,16 +132,3 @@ def test_dangling_else_iiaeiaea():
     assert if1.instruction_else is None
     assert if2.instruction_else is not None
     assert if3.instruction_else is not None
-
-
-def test_if_no_instruction():
-    text = "if (a < b)"
-    with pytest.raises(SystemExit):
-        parser.parse(text)
-
-
-def test_if_empty_instruction():
-    text = "if (a < b);"
-    ast = parser.parse(text)
-    if_ = ast.instructions.instructions[0]
-    assert if_.instruction_if == EmptyInstruction()

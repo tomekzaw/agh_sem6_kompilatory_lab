@@ -3,7 +3,7 @@ from Mparser import parser
 from ast_ import *
 
 
-def test_for_single_instruction():
+def test_for():
     text = """
     for i = 1:10
         print i;
@@ -19,30 +19,6 @@ def test_for_single_instruction():
                 ),
                 Print([
                     Variable('i')
-                ])
-            )
-        ])
-    )
-
-def test_for_instruction_block():
-    text = """
-    for i = 1:10 {
-        print i;
-    }
-    """
-    ast = parser.parse(text)
-    assert ast == Program(
-        Instructions([
-            For(
-                Variable('i'),
-                Range(
-                    IntNum(1),
-                    IntNum(10),
-                ),
-                Instructions([
-                    Print([
-                        Variable('i')
-                    ])
                 ])
             )
         ])

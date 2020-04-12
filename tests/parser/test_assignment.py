@@ -3,14 +3,14 @@ from Mparser import parser
 from ast_ import *
 
 
-@pytest.mark.parametrize('ass_op', ('=', '+=', '-=', '*=', '/='))
-def test_assignment_to_variable(ass_op):
-    text = f"foo {ass_op} 42;"
+@pytest.mark.parametrize('assign_op', ('=', '+=', '-=', '*=', '/='))
+def test_assignment_to_variable(assign_op):
+    text = f"foo {assign_op} 42;"
     ast = parser.parse(text)
     assert ast == Program(
         Instructions([
             Assignment(
-                ass_op,
+                assign_op,
                 Variable('foo'),
                 IntNum(42)
             )
@@ -18,14 +18,14 @@ def test_assignment_to_variable(ass_op):
     )
 
 
-@pytest.mark.parametrize('ass_op', ('=', '+=', '-=', '*=', '/='))
-def test_assignment_to_matrix_index(ass_op):
-    text = f"A[1, 2] {ass_op} 42;"
+@pytest.mark.parametrize('assign_op', ('=', '+=', '-=', '*=', '/='))
+def test_assignment_to_matrix_index(assign_op):
+    text = f"A[1, 2] {assign_op} 42;"
     ast = parser.parse(text)
     assert ast == Program(
         Instructions([
             Assignment(
-                ass_op,
+                assign_op,
                 MatrixElement(
                     Variable('A'),
                     IntNum(1),
@@ -36,7 +36,9 @@ def test_assignment_to_matrix_index(ass_op):
         ])
     )
 
+
 @pytest.mark.parametrize('expression', (
+    "",
     "42",
     "42.0",
     "\"Hello world!\"",

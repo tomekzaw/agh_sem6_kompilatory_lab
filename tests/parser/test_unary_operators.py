@@ -6,6 +6,8 @@ from ast_ import *
 @pytest.mark.parametrize('text', (
     "foo = -123;",
     "foo = - 123;",
+    "foo = -(123);",
+    "foo = (-123);",
 ))
 def test_unary_minus(text):
     ast = parser.parse(text)
@@ -27,6 +29,8 @@ def test_unary_minus(text):
     "foo = --123;",
     "foo = - -123;",
     "foo = - - 123;",
+    "foo = --(123);",
+    "foo = -(-123);",
 ))
 def test_double_unary_minus(text):
     ast = parser.parse(text)
@@ -73,6 +77,8 @@ def test_unary_vs_binary_minus(text):
 @pytest.mark.parametrize('text', (
     "foo = A';",
     "foo = A ';",
+    "foo = (A)';",
+    "foo = (A');",
 ))
 def test_transpose(text):
     ast = parser.parse(text)
@@ -93,6 +99,9 @@ def test_transpose(text):
     "foo = A'';",
     "foo = A' ';",
     "foo = A ' ';",
+    "foo = (A)'';",
+    "foo = (A')';",
+    "foo = (A'');",
 ))
 def test_double_transpose(text):
     ast = parser.parse(text)
@@ -103,26 +112,6 @@ def test_double_transpose(text):
                 Variable('foo'),
                 UnaryExpr(
                     "'",
-                    UnaryExpr(
-                        "'",
-                        Variable('A')
-                    )
-                )
-            )
-        ])
-    )
-
-
-def test_precedence_transpose_over_unary_minus():
-    text = "foo = -A';"
-    ast = parser.parse(text)
-    assert ast == Program(
-        Instructions([
-            Assignment(
-                '=',
-                Variable('foo'),
-                UnaryExpr(
-                    '-',
                     UnaryExpr(
                         "'",
                         Variable('A')
