@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 @pytest.mark.parametrize('input_name, expected_output_name', (
+    ('example.txt', 'example.txt'),
     ('example1.m', 'example1.tree'),
     ('example2.m', 'example2.tree'),
     ('example3.m', 'example3.tree'),

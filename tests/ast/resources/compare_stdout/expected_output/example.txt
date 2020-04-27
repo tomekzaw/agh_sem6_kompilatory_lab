@@ -1,0 +1,17 @@
+=
+|  A
+|  zeros
+|  |  5
+=
+|  D
+|  .+
+|  |  A
+|  |  TRANSPOSE
+|  |  |  B
+FOR
+|  j
+|  RANGE
+|  |  1
+|  |  10
+|  PRINT
+|  |  j
