@@ -141,4 +141,4 @@ class TreePrinter:
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):
-        pass
+        iprint('ERROR', indent)
