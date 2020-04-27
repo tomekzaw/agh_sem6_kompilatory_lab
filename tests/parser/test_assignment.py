@@ -69,5 +69,5 @@ def test_assignment_to_matrix_index(indices, node):
 @pytest.mark.parametrize('ass_op', ('=', '+=', '-=', '*=', '/='))
 def test_assignment_to_expression(expression, ass_op):
     text = f"{expression} {ass_op} 42;"
-    with pytest.raises(SystemExit):
-        parser.parse(text)
+    parser.parse(text)
+    assert not parser.errorok

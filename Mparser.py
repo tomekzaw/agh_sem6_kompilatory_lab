@@ -24,7 +24,6 @@ def p_error(p):
     else:
         column = find_tok_column(p)
         print(f"Syntax error at line {p.lineno}, column {column}: LexToken({p.type}, '{p.value}')")
-    raise SystemExit
 
 def p_program(p):
     """program : instructions"""
@@ -227,4 +226,7 @@ if __name__ == '__main__':
         text = sys.stdin.read()
 
     ast = parser.parse(text, lexer=lexer)
+    if not parser.errorok:
+        raise SystemExit
+
     ast.printTree()

@@ -23,11 +23,11 @@ def test_condition(comp_op):
 
 def test_condition_is_not_expression():
     text = "foo = a < b;"
-    with pytest.raises(SystemExit):
-        parser.parse(text)
+    parser.parse(text)
+    assert not parser.errorok
 
 
 def test_condition_nonassoc():
     text = "if (a < b < c) break;"
-    with pytest.raises(SystemExit):
-        parser.parse(text)
+    parser.parse(text)
+    assert not parser.errorok

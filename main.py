@@ -17,4 +17,7 @@ if __name__ == '__main__':
     #     print('(%d): %s(%s)' % (token.lineno, token.type, token.value))
 
     ast = parser.parse(text, lexer=lexer)
+    if not parser.errorok:
+        raise SystemExit
+
     ast.printTree()
