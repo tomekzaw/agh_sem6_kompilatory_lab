@@ -2,6 +2,7 @@ import sys
 from scanner import lexer, find_column
 from Mparser import parser
 from TreePrinter import TreePrinter
+from TypeChecker import TypeChecker
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -21,3 +22,6 @@ if __name__ == '__main__':
         raise SystemExit
 
     ast.printTree()
+
+    typeChecker = TypeChecker()
+    typeChecker.visit(ast)
