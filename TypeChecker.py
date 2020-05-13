@@ -25,16 +25,24 @@ class NodeVisitor(object):
 class TypeChecker(NodeVisitor):
     def __init__(self):
         self.errorok = True
+        self.loops = 0
 
-    def error(self, message, kind='type'):
+    def error(self, message):
         self.errorok = False
-        print(f'{kind} error: {message}')
+        print(f'error: {message}')
 
     def visit_If(self, node):
         self.visit(node.condition)
         self.visit(node.instruction_then)
         if node.instruction_else is not None:
             self.visit(node.instruction_else)
+
+    def visit_For(self, node):
+        self.visit(node.variable)
+        self.visit(node.range_)
+        self.loops += 1
+        self.visit(node.instruction)
+        self.loops -= 1
 
     def visit_Range(self, node):
         start_type = self.visit(node.start)
@@ -46,6 +54,12 @@ class TypeChecker(NodeVisitor):
             self.error('range end must be int')
 
         return 'range'
+
+    def visit_While(self, node):
+        self.visit(node.condition)
+        self.loops += 1
+        self.visit(node.instruction)
+        self.loops -= 1
 
     def visit_Condition(self, node):
         left_type = self.visit(node.left)
@@ -65,12 +79,12 @@ class TypeChecker(NodeVisitor):
         self.error(f'cannot perform: {left_type} {node.op} {right_type}')
 
     def visit_Break(self, node):
-        # TODO: check if inside loop
-        pass
+        if self.loops == 0:
+            self.error('cannot use break outside loop')
 
     def visit_Continue(self, node):
-        # TODO: check if inside loop
-        pass
+        if self.loops == 0:
+            self.error('cannot use continue outside loop')
 
     def visit_Return(self, node):
         if node.value is not None:
@@ -130,7 +144,20 @@ class TypeChecker(NodeVisitor):
                 return 'float'
 
         if node.op in ('.+', '.-', '.*', './'):
+            if types == {'vector'}:
+                if isinstance(node.left, AST.Vector) and isinstance(node.right, AST.Vector):
+                    left_shape = len(node.left.elements)
+                    right_shape = len(node.right.elements)
+                    if left_shape != right_shape:
+                        self.error(f'different shapes {left_shape} vs {right_shape}')
+                return 'vector'
+
             if types == {'matrix'}:
+                if isinstance(node.left, AST.Vector) and isinstance(node.right, AST.Vector):
+                    left_shape = (len(node.left.elements), len(node.left.elements[0].elements))
+                    right_shape = (len(node.right.elements), len(node.right.elements[0].elements))
+                    if left_shape != right_shape:
+                        self.error(f'different shapes {left_shape} vs {right_shape}')
                 return 'matrix'
 
         self.error(f'cannot perform {left_type} {node.op} {right_type}')
@@ -143,18 +170,16 @@ class TypeChecker(NodeVisitor):
             return 'unknown'
 
         if node.op == '-':
-            if expr_type in ('int', 'float'):
+            if expr_type in ('int', 'float', 'vector', 'matrix'):
                 return expr_type
 
             self.error(f'cannot perform: {node.op}{expr_type}')
-            return 'unknown'
 
         if node.op == "'":
             if expr_type == 'matrix':
                 return expr_type
 
             self.error(f'cannot perform {expr_type}{node.op}')
-            return 'unknown'
 
         return 'unknown'
 
@@ -176,6 +201,10 @@ class TypeChecker(NodeVisitor):
                 self.error(f'vector element must be int or float')
             elements_types.add(element_type)
 
+        if 'matrix' in elements_types:
+            self.error('only 2D matrix supported')
+            return 'matrix'
+
         if 'vector' in elements_types:
             if elements_types == {'vector'}:
                 lengths = {len(element.elements) for element in node.elements}
@@ -184,9 +213,13 @@ class TypeChecker(NodeVisitor):
             else:
                 self.error(f'matrix rows must be vectors')
 
-        return f'vector'
+            return 'matrix'
+
+        return 'vector'
 
     def visit_MatrixSpecialFunction(self, node):
+        # TODO: check non-negativity
+
         rows_type = self.visit(node.rows)
         if rows_type not in ('unknown', 'int'):
             self.error(f'number of rows must be int')
