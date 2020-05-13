@@ -21,7 +21,9 @@ if __name__ == '__main__':
     if not parser.errorok:
         raise SystemExit
 
-    ast.printTree()
+    # ast.printTree()
 
     typeChecker = TypeChecker()
     typeChecker.visit(ast)
+    if not typeChecker.errorok:
+        raise SystemExit

@@ -3,7 +3,9 @@ from typing import Any
 
 @dataclass
 class Node(object):
-    pass
+    @property
+    def children(self):
+        return self.__dict__.values()
 
 @dataclass
 class Program(Node):
@@ -103,9 +105,9 @@ class FloatNum(Constant):
 class String(Constant):
     pass
 
-@dataclass
-class Matrix(Node):
-    rows: list
+# @dataclass
+# class Matrix(Node):
+#     rows: list
 
 @dataclass
 class Vector(Node):
