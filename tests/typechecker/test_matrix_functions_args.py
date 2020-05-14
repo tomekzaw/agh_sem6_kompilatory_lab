@@ -41,11 +41,23 @@ def test_matrix_functions_args_pass(text):
     "X = zeros(3.0, 4);",
     "X = zeros(3.0, 4.0);",
 
-    'X = zeros("3");',
+    'X = zeros("Hello world!");',
+    '''
+    string = "Hello world!";
+    X = zeros(string);
+    ''',
 
     "X = zeros([3]);",
+    '''
+    vector = [3];
+    X = zeros(vector);
+    ''',
 
     "X = zeros([[3]]);",
+    '''
+    matrix = [[3]];
+    X = zeros(matrix);
+    ''',
 ))
 def test_matrix_functions_args_fail(text):
     ast = parser.parse(text)

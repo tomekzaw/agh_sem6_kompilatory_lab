@@ -23,7 +23,7 @@ from TypeChecker import TypeChecker
                              [10,11,12] ];
     """,
 
-    'foo = 2 + 3.0;',
+    "foo = 2 + 3.0;",
 
     "foo = ones(3, 4) .+ eye(3, 4);",
 ))
@@ -43,6 +43,13 @@ def test_binary_expression_pass(text):
     "foo = [ [1, 2] ] .+ [ [3], [4] ];",
 
     'foo = 2 + "hello";',
+    '''
+    a = 2;
+    b = "hello";
+    foo = a + b;
+    ''',
+
+    "foo = ones(3, 4) .+ eye(5, 6);",
 ))
 def test_binary_expression_fail(text):
     ast = parser.parse(text)

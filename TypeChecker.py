@@ -136,12 +136,15 @@ class TypeChecker(NodeVisitor):
         return Symbol('unknown')  # TODO: detect row, column or cell
 
     def visit_BinExpr(self, node):
-        left_type = self.visit(node.left).type
-        right_type = self.visit(node.right).type
+        left_symbol = self.visit(node.left)
+        right_symbol = self.visit(node.right)
+
+        left_type = left_symbol.type
+        right_type = right_symbol.type
         types = {left_type, right_type}
 
         if 'unknown' in types:
-            return String('unknown')
+            return Symbol('unknown')
 
         if node.op == '+' and types == {'string'}:
             return Symbol('string')
@@ -151,59 +154,79 @@ class TypeChecker(NodeVisitor):
 
         if node.op in ('+', '-', '*', '/'):
             if types == {'int'}:
-                return Symbol('int')
+                return Symbol('int')  # TODO: perform operations on constant operands?
 
             if types == {'int', 'float'}:
                 return Symbol('float')
 
         if node.op in ('.+', '.-', '.*', './'):
             if types == {'vector'}:
-                if isinstance(node.left, AST.Vector) and isinstance(node.right, AST.Vector):
-                    left_shape = len(node.left.elements)
-                    right_shape = len(node.right.elements)
-                    if left_shape != right_shape:
-                        self.error(f'different shapes {left_shape} vs {right_shape}', node.left.lineno)
-                return Symbol('vector')
+                try:
+                    left_length = left_symbol.params['length']
+                    right_length = right_symbol.params['length']
+                    if left_length != right_length:
+                        self.error(f'vectors have different length ({left_length} vs. {right_length})', node.left.lineno)
+                    return Symbol('vector', params={'length': left_length})
+                except KeyError:
+                    return Symbol('vector')
 
             if types == {'matrix'}:
-                if isinstance(node.left, AST.Vector) and isinstance(node.right, AST.Vector):
-                    left_shape = (len(node.left.elements), len(node.left.elements[0].elements))
-                    right_shape = (len(node.right.elements), len(node.right.elements[0].elements))
-                    if left_shape != right_shape:
-                        self.error(f'different shapes {left_shape} vs {right_shape}', node.left.lineno)
-                return Symbol('matrix')
+                left_rows = left_symbol.params.get('rows', None)
+                right_rows = right_symbol.params.get('rows', None)
+                left_cols = left_symbol.params.get('cols', None)
+                right_cols = right_symbol.params.get('cols', None)
+
+                params = {}
+
+                if left_rows is not None and right_rows is not None and left_rows != right_rows:
+                    self.error(f'matrices have different number of rows ({left_rows} vs. {right_rows}', node.left.lineno)
+                else:
+                    params['rows'] = left_rows
+
+                if left_cols is not None and right_cols is not None and left_cols != right_cols:
+                    self.error(f'matrices have different number of columns ({left_cols} vs. {right_cols}', node.left.lineno)
+                else:
+                    params['cols'] = left_cols
+
+                return Symbol('matrix', params=params)
 
         self.error(f'cannot perform {left_type} {node.op} {right_type}', node.left.lineno)
         return Symbol('unknown')
 
     def visit_UnaryExpr(self, node):
-        expr_type = self.visit(node.expr).type
+        expr_symbol = self.visit(node.expr)
+        expr_type = expr_symbol.type
 
         if expr_type == 'unknown':
             return Symbol('unknown')
 
         if node.op == '-':
             if expr_type in ('int', 'float', 'vector', 'matrix'):
-                return Symbol(expr_type)
+                return Symbol(expr_type, params=expr_symbol.params)
 
             self.error(f'cannot perform: {node.op}{expr_type}', node.expr.lineno)
 
         if node.op == "'":
             if expr_type == 'matrix':
-                return Symbol(expr_type)
+                params = {}
+                if 'cols' in expr_symbol.params:
+                    params['rows'] = expr_symbol.params['cols']
+                if 'rows' in expr_symbol.params:
+                    params['cols'] = expr_symbol.params['rows']
+                return Symbol(expr_type, params=params)
 
             self.error(f'cannot perform {expr_type}{node.op}', node.expr.lineno)
 
         return Symbol('unknown')
 
     def visit_IntNum(self, node):
-        return Symbol('int', node.value)
+        return Symbol('int', value=node.value)
 
     def visit_FloatNum(self, node):
-        return Symbol('float', node.value)
+        return Symbol('float', value=node.value)
 
     def visit_String(self, node):
-        return Symbol('string', node.value)
+        return Symbol('string', value=node.value)
 
     def visit_Vector(self, node):
         elements_types = set()
@@ -216,7 +239,7 @@ class TypeChecker(NodeVisitor):
 
         if 'matrix' in elements_types:
             self.error('only 2D matrix supported', element.lineno)
-            return Symbol('matrix')
+            return Symbol('matrix', params={'rows': len(node.elements)})
 
         if 'vector' in elements_types:
             if elements_types == {'vector'}:
@@ -226,24 +249,26 @@ class TypeChecker(NodeVisitor):
             else:
                 self.error(f'matrix rows must be vectors', node.elements[0].lineno)
 
-            return Symbol('matrix')
+            return Symbol('matrix', params={'rows': len(node.elements), 'cols': len(node.elements[0].elements)})
 
-        return Symbol('vector')
+        return Symbol('vector', params={'length': len(node.elements)})
 
     def visit_MatrixSpecialFunction(self, node):
         # TODO: check non-negativity
 
-        rows_type = self.visit(node.rows).type
-        if rows_type not in ('unknown', 'int'):
+        rows_symbol = self.visit(node.rows)
+        if rows_symbol.type not in ('unknown', 'int'):
             self.error(f'number of rows must be int', node.rows.lineno)
 
         if node.cols is not None:
-            cols_type = self.visit(node.cols).type
-            if cols_type not in ('unknown', 'int'):
+            cols_symbol = self.visit(node.cols)
+            if cols_symbol.type not in ('unknown', 'int'):
                 self.error(f'number of columns must be int', node.cols.lineno)
 
-        return Symbol('matrix')
-        # TODO: return shape if available
+        rows_value = rows_symbol.value
+        cols_value = cols_symbol.value if node.cols is not None else rows_value
+
+        return Symbol('matrix', params={'rows': rows_value, 'cols': cols_value})
 
     visit_Eye = visit_MatrixSpecialFunction
     visit_Zeros = visit_MatrixSpecialFunction

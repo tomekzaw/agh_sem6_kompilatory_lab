@@ -3,39 +3,11 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 
-# @dataclass
-# class Symbol(object):
-#     pass
-
-
-# @dataclass
-# class ConstantSymbol(Symbol):
-#     type: str
-#     value: Any
-
-
-# @dataclass
-# class VariableSymbol(object):
-#     name: str
-#     type: str
-#     value: Any = None
-
-
-# @dataclass
-# class VectorSymbol(Symbol):
-#     length: int
-
-
-# @dataclass
-# class MatrixSymbol(Symbol):
-#     rows: int
-#     cols: int
-
-
 @dataclass
 class Symbol(object):
-    type: str = 'unknown'  # 'int', 'float', 'string', 'range', 'vector[3]', 'matrix[3,3]', 'unknown'
-    value: Any = None
+    type: str = 'unknown'  # 'int', 'float', 'string', 'range', 'vector', 'matrix', 'unknown'
+    params: dict = field(default_factory=dict)  # 'length', 'rows', 'cols'
+    value: Any = None  # None means unknown value
 
 
 @dataclass
