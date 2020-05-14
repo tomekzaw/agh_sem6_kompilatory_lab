@@ -1,12 +1,17 @@
 from dataclasses import dataclass
 from typing import Any
+from scanner import lexer
 
 @dataclass
 class Node(object):
+    def __new__(cls, *args, **kwargs):
+        obj = object.__new__(cls)
+        obj.lineno = lexer.lineno
+        return obj
+
     # @property
     # def children(self):
     #     return self.__dict__.values()
-    pass
 
 @dataclass
 class Program(Node):

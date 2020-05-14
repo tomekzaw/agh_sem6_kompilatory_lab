@@ -28,17 +28,14 @@ def p_error(p):
 def p_program(p):
     """program : instructions"""
     p[0] = Program(p[1])
-    p[0].lineno = lexer.lineno
 
 def p_instructions(p):
     """instructions : instructions instruction"""
     p[0] = Instructions(p[1].instructions + [p[2]])
-    p[0].lineno = lexer.lineno
 
 def p_instructions_empty(p):
     """instructions : """
     p[0] = Instructions([])
-    p[0].lineno = lexer.lineno
 
 def p_instruction_block(p):
     """instruction : '{' instructions '}'"""
@@ -51,22 +48,18 @@ def p_instruction_block(p):
 def p_instruction_if(p):
     """instruction : IF '(' condition ')' instruction %prec IFX"""
     p[0] = If(p[3], p[5])
-    p[0].lineno = lexer.lineno
 
 def p_instruction_if_else(p):
     """instruction : IF '(' condition ')' instruction ELSE instruction"""
     p[0] = If(p[3], p[5], p[7])
-    p[0].lineno = lexer.lineno
 
 def p_instruction_for(p):
     """instruction : FOR variable '=' range instruction"""
     p[0] = For(p[2], p[4], p[5])
-    p[0].lineno = lexer.lineno
 
 def p_instruction_while(p):
     """instruction : WHILE '(' condition ')' instruction"""
     p[0] = While(p[3], p[5])
-    p[0].lineno = lexer.lineno
 
 def p_condition(p):
     """condition : expression EQ expression
@@ -76,17 +69,14 @@ def p_condition(p):
                  | expression '<' expression
                  | expression '>' expression"""
     p[0] = Condition(p[2], p[1], p[3])
-    p[0].lineno = lexer.lineno
 
 def p_variable(p):
     """variable : ID"""
     p[0] = Variable(p[1])
-    p[0].lineno = lexer.lineno
 
 def p_range(p):
     """range : expression ':' expression"""
     p[0] = Range(p[1], p[3])
-    p[0].lineno = lexer.lineno
 
 def p_instruction_statement(p):
     """instruction : statement ';'"""
@@ -95,27 +85,22 @@ def p_instruction_statement(p):
 def p_statement_break(p):
     """statement : BREAK"""
     p[0] = Break()
-    p[0].lineno = lexer.lineno
 
 def p_statement_continue(p):
     """statement : CONTINUE"""
     p[0] = Continue()
-    p[0].lineno = lexer.lineno
 
 def p_statement_return(p):
     """statement : RETURN"""
     p[0] = Return()
-    p[0].lineno = lexer.lineno
 
 def p_statement_return_expression(p):
     """statement : RETURN expression"""
     p[0] = Return(p[2])
-    p[0].lineno = lexer.lineno
 
 def p_statement_print(p):
     """statement : PRINT expression_list"""
     p[0] = Print(p[2])
-    p[0].lineno = lexer.lineno
 
 def p_statement_assignment(p):
     """statement : lvalue '=' expression
@@ -124,7 +109,6 @@ def p_statement_assignment(p):
                  | lvalue MULASSIGN expression
                  | lvalue DIVASSIGN expression"""
     p[0] = Assignment(p[2], p[1], p[3])
-    p[0].lineno = lexer.lineno
 
 def p_lvalue_variable(p):
     """lvalue : variable"""
@@ -133,7 +117,6 @@ def p_lvalue_variable(p):
 def p_lvalue_reference(p):
     """lvalue : variable '[' expression_list ']'"""
     p[0] = Reference(p[1], p[3])
-    p[0].lineno = lexer.lineno
 
 def p_expression_binary(p):
     """expression : expression '+' expression
@@ -145,17 +128,14 @@ def p_expression_binary(p):
                   | expression DOTMUL expression
                   | expression DOTDIV expression"""
     p[0] = BinExpr(p[2], p[1], p[3])
-    p[0].lineno = lexer.lineno
 
 def p_expression_uminus(p):
     """expression : '-' expression %prec UMINUS"""
     p[0] = UnaryExpr(p[1], p[2])
-    p[0].lineno = lexer.lineno
 
 def p_expression_transpose(p):
     """expression : expression "'" """
     p[0] = UnaryExpr(p[2], p[1])
-    p[0].lineno = lexer.lineno
 
 def p_expression_group(p):
     """expression : '(' expression ')'"""
@@ -172,17 +152,14 @@ def p_expression_range(p):
 def p_expression_intnum(p):
     """expression : INTNUM"""
     p[0] = IntNum(p[1])
-    p[0].lineno = lexer.lineno
 
 def p_expression_floatnum(p):
     """expression : FLOATNUM"""
     p[0] = FloatNum(p[1])
-    p[0].lineno = lexer.lineno
 
 def p_expression_string(p):
     """expression : STRING"""
     p[0] = String(p[1])
-    p[0].lineno = lexer.lineno
 
 def p_expression_list(p):
     """expression_list : expression_list ',' expression"""
@@ -199,7 +176,6 @@ def p_expression_list_empty(p):
 def p_vector(p):
     """expression : '[' expression_list ']'"""
     p[0] = Vector(p[2])
-    p[0].lineno = lexer.lineno
 
 # def p_matrix(p):
 #     """expression : '[' matrix_rows ']'"""
@@ -216,32 +192,26 @@ def p_vector(p):
 def p_eye_1(p):
     """expression : EYE '(' expression ')'"""
     p[0] = Eye(p[3])
-    p[0].lineno = lexer.lineno
 
 def p_eye_2(p):
     """expression : EYE '(' expression ',' expression ')'"""
     p[0] = Eye(p[3], p[5])
-    p[0].lineno = lexer.lineno
 
 def p_zeros_1(p):
     """expression : ZEROS '(' expression ')'"""
     p[0] = Zeros(p[3])
-    p[0].lineno = lexer.lineno
 
 def p_zeros_2(p):
     """expression : ZEROS '(' expression ',' expression ')'"""
     p[0] = Zeros(p[3], p[5])
-    p[0].lineno = lexer.lineno
 
 def p_ones_1(p):
     """expression : ONES '(' expression ')'"""
     p[0] = Ones(p[3])
-    p[0].lineno = lexer.lineno
 
 def p_ones_2(p):
     """expression : ONES '(' expression ',' expression ')'"""
     p[0] = Ones(p[3], p[5])
-    p[0].lineno = lexer.lineno
 
 parser = yacc.yacc()
 
