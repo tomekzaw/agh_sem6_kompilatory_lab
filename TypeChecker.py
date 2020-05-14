@@ -27,10 +27,16 @@ class TypeChecker(NodeVisitor):
         self.errorok = True
         self.loops = 0
 
-    def error(self, message):
+    def error(self, message: str, lineno: int):
         self.errorok = False
-        print(f'error: {message}')
+        print(f'line {lineno}: {message}')
         # TODO: add line number
+
+    def visit_Program(self, node):
+        self.visit(node.instructions)
+
+    def visit_Instructions(self, node):
+        self.visit(node.instructions)
 
     def visit_If(self, node):
         self.visit(node.condition)
@@ -40,6 +46,7 @@ class TypeChecker(NodeVisitor):
 
     def visit_For(self, node):
         self.visit(node.variable)
+        # TODO: variable scope
         self.visit(node.range_)
         self.loops += 1
         self.visit(node.instruction)
@@ -48,11 +55,11 @@ class TypeChecker(NodeVisitor):
     def visit_Range(self, node):
         start_type = self.visit(node.start)
         if start_type not in ('int', 'unknown'):
-            self.error('range start must be int')
+            self.error('range start must be int', node.start.lineno)
 
         end_type = self.visit(node.start)
         if end_type not in ('int', 'unknown'):
-            self.error('range end must be int')
+            self.error('range end must be int', node.end.lineno)
 
         return 'range'
 
@@ -77,27 +84,27 @@ class TypeChecker(NodeVisitor):
             if types.issubset({'int', 'float'}):
                 return
 
-        self.error(f'cannot perform: {left_type} {node.op} {right_type}')
+        self.error(f'cannot perform: {left_type} {node.op} {right_type}', node.left.lineno)
 
     def visit_Break(self, node):
         if self.loops == 0:
-            self.error('cannot use break outside loop')
+            self.error('cannot use break outside loop', node.lineno)
 
     def visit_Continue(self, node):
         if self.loops == 0:
-            self.error('cannot use continue outside loop')
+            self.error('cannot use continue outside loop', node.lineno)
 
     def visit_Return(self, node):
         if node.value is not None:
             value_type = self.visit(node.value)
             if value_type not in ('int', 'unknown'):  # exit code
-                self.error(f'cannot return {value_type}, must return int or nothing')
+                self.error(f'cannot return {value_type}, must return int or nothing', node.value.lineno)
 
     def visit_Print(self, node):
         for arg in args:
             arg_type = self.visit(arg)
             if arg_type not in ('unknown', 'int', 'float', 'string', 'vector', 'matrix'):
-                self.error(f'cannot print {arg_type}')
+                self.error(f'cannot print {arg_type}', arg.lineno)
 
     def visit_Assignment(self, node):
         left_type = self.visit(node.left)
@@ -114,12 +121,12 @@ class TypeChecker(NodeVisitor):
         variable_type = self.visit(node.variable)
 
         if variable_type in ('int', 'float', 'string'):
-            self.error(f'{variable_type} is not subscriptable')
+            self.error(f'{variable_type} is not subscriptable', node.variable.lineno)
 
         for index in node.indices:
             index_type = self.visit(index)
             if index_type not in ('unknown', 'int', 'range'):
-                self.error(f'index must be int or range')
+                self.error(f'index must be int or range', index.lineno)
 
         return 'unknown'
 
@@ -150,7 +157,7 @@ class TypeChecker(NodeVisitor):
                     left_shape = len(node.left.elements)
                     right_shape = len(node.right.elements)
                     if left_shape != right_shape:
-                        self.error(f'different shapes {left_shape} vs {right_shape}')
+                        self.error(f'different shapes {left_shape} vs {right_shape}', node.left.lineno)
                 return 'vector'
 
             if types == {'matrix'}:
@@ -158,10 +165,10 @@ class TypeChecker(NodeVisitor):
                     left_shape = (len(node.left.elements), len(node.left.elements[0].elements))
                     right_shape = (len(node.right.elements), len(node.right.elements[0].elements))
                     if left_shape != right_shape:
-                        self.error(f'different shapes {left_shape} vs {right_shape}')
+                        self.error(f'different shapes {left_shape} vs {right_shape}', node.left.lineno)
                 return 'matrix'
 
-        self.error(f'cannot perform {left_type} {node.op} {right_type}')
+        self.error(f'cannot perform {left_type} {node.op} {right_type}', node.left.lineno)
         return 'unknown'
 
     def visit_UnaryExpr(self, node):
@@ -174,13 +181,13 @@ class TypeChecker(NodeVisitor):
             if expr_type in ('int', 'float', 'vector', 'matrix'):
                 return expr_type
 
-            self.error(f'cannot perform: {node.op}{expr_type}')
+            self.error(f'cannot perform: {node.op}{expr_type}', node.expr.lineno)
 
         if node.op == "'":
             if expr_type == 'matrix':
                 return expr_type
 
-            self.error(f'cannot perform {expr_type}{node.op}')
+            self.error(f'cannot perform {expr_type}{node.op}', node.expr.lineno)
 
         return 'unknown'
 
@@ -199,20 +206,20 @@ class TypeChecker(NodeVisitor):
         for element in node.elements:
             element_type = self.visit(element)
             if element_type not in ('unknown', 'int', 'float', 'vector'):
-                self.error(f'vector element must be int or float')
+                self.error(f'vector element must be int or float', element.lineno)
             elements_types.add(element_type)
 
         if 'matrix' in elements_types:
-            self.error('only 2D matrix supported')
+            self.error('only 2D matrix supported', element.lineno)
             return 'matrix'
 
         if 'vector' in elements_types:
             if elements_types == {'vector'}:
                 lengths = {len(element.elements) for element in node.elements}
                 if len(lengths) > 1:
-                    self.error(f'matrix rows must be the same length')
+                    self.error(f'matrix rows must be the same length', node.elements[0].lineno)
             else:
-                self.error(f'matrix rows must be vectors')
+                self.error(f'matrix rows must be vectors', node.elements[0].lineno)
 
             return 'matrix'
 
@@ -223,12 +230,12 @@ class TypeChecker(NodeVisitor):
 
         rows_type = self.visit(node.rows)
         if rows_type not in ('unknown', 'int'):
-            self.error(f'number of rows must be int')
+            self.error(f'number of rows must be int', node.rows.lineno)
 
         if node.cols is not None:
             cols_type = self.visit(node.cols)
             if cols_type not in ('unknown', 'int'):
-                self.error(f'number of columns must be int')
+                self.error(f'number of columns must be int', node.cols.lineno)
 
         return 'matrix'
         # TODO: return shape if available

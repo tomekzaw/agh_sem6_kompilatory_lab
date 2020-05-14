@@ -3,9 +3,10 @@ from typing import Any
 
 @dataclass
 class Node(object):
-    @property
-    def children(self):
-        return self.__dict__.values()
+    # @property
+    # def children(self):
+    #     return self.__dict__.values()
+    pass
 
 @dataclass
 class Program(Node):
