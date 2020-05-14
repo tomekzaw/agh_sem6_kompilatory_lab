@@ -23,7 +23,9 @@ from TypeChecker import TypeChecker
                              [10,11,12] ];
     """,
 
-    "foo = ones(3, 4) .+ eyes(3, 4);",
+    'foo = 2 + 3.0;',
+
+    "foo = ones(3, 4) .+ eye(3, 4);",
 ))
 def test_binary_expression_pass(text):
     ast = parser.parse(text)
@@ -34,8 +36,8 @@ def test_binary_expression_pass(text):
 
 @pytest.mark.parametrize('text', (
     # dodawanie skalara lub wektora do macierzy
-    "foo = [ [1, 2], [3, 4] ] .+ 5;"
-    "foo = [ [1, 2], [3, 4] ] .+ [5, 6];"
+    "foo = [ [1, 2], [3, 4] ] .+ 5;",
+    "foo = [ [1, 2], [3, 4] ] .+ [5, 6];",
 
     # operacje binarne na wektorach lub macierzach o niekompatybilnych wymiarach
     "foo = [ [1, 2] ] .+ [ [3], [4] ];",

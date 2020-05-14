@@ -29,7 +29,7 @@ def test_matrix_initializer_shape_pass(text):
 
 @pytest.mark.parametrize('text', (
     "X = [ [ [] ] ];",
-    "X = [ [ [0] ] ];"
+    "X = [ [ [0] ] ];",
     "X = [ [ [ [] ] ] ];",
     "X = [ [], [ [] ] ];",
     "X = [ [ [] ], [] ];",

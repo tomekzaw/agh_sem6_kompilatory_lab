@@ -8,11 +8,26 @@ from TypeChecker import TypeChecker
     "X = zeros(3);",
     "X = zeros(3, 4);",
 
-    "X = zeros(n);",
-    "X = zeros(m, n);",
+    """
+    n = 3;
+    X = zeros(n);
+    """,
 
-    "X = zeros(A[1]);",
-    "X = zeros(A[1, 3]);",
+    """
+    m = 2;
+    n = 3;
+    X = zeros(m, n);
+    """,
+
+    """
+    A = [1, 2, 3];
+    X = zeros(A[1]);
+    """,
+
+    """
+    A = ones(3)
+    X = zeros(A[1, 3]);
+    """,
 ))
 def test_matrix_functions_args_pass(text):
     ast = parser.parse(text)
