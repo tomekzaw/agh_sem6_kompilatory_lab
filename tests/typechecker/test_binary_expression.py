@@ -23,7 +23,7 @@ from TypeChecker import TypeChecker
                              [10,11,12] ];
     """,
 
-    "foo = ones(3, 4) + eyes(3, 4);",
+    "foo = ones(3, 4) .+ eyes(3, 4);",
 ))
 def test_binary_expression_pass(text):
     ast = parser.parse(text)

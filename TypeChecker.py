@@ -30,6 +30,7 @@ class TypeChecker(NodeVisitor):
     def error(self, message):
         self.errorok = False
         print(f'error: {message}')
+        # TODO: add line number
 
     def visit_If(self, node):
         self.visit(node.condition)
@@ -230,6 +231,7 @@ class TypeChecker(NodeVisitor):
                 self.error(f'number of columns must be int')
 
         return 'matrix'
+        # TODO: return shape if available
 
     visit_Eye = visit_MatrixSpecialFunction
     visit_Zeros = visit_MatrixSpecialFunction
