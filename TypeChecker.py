@@ -5,21 +5,8 @@ import AST
 class NodeVisitor(object):
     def visit(self, node):
         method = 'visit_' + node.__class__.__name__
-        visitor = getattr(self, method, self.generic_visit)
+        visitor = getattr(self, method)
         return visitor(node)
-
-    def generic_visit(self, node):  # called if no explicit visitor function exists for a node.
-        if isinstance(node, list):
-            for elem in node:
-                self.visit(elem)
-        else:
-            for child in node.children:
-                if isinstance(child, list):
-                    for item in child:
-                        if isinstance(item, AST.Node):
-                            self.visit(item)
-                elif isinstance(child, AST.Node):
-                    self.visit(child)
 
 
 class TypeChecker(NodeVisitor):
@@ -30,13 +17,13 @@ class TypeChecker(NodeVisitor):
     def error(self, message: str, lineno: int):
         self.errorok = False
         print(f'line {lineno}: {message}')
-        # TODO: add line number
 
     def visit_Program(self, node):
         self.visit(node.instructions)
 
     def visit_Instructions(self, node):
-        self.visit(node.instructions)
+        for instruction in node.instructions:
+            self.visit(instruction)
 
     def visit_If(self, node):
         self.visit(node.condition)
