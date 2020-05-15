@@ -4,7 +4,7 @@ from SymbolTable import *
 
 
 class NodeVisitor(object):
-    def visit(self, node):
+    def visit(self, node, **kwargs):
         method = 'visit_' + node.__class__.__name__
         visitor = getattr(self, method)
         return visitor(node)
