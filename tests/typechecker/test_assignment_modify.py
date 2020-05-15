@@ -98,3 +98,23 @@ def test_can_modify_value(initial_value, modifier):
     a += {modifier};
     """
     assert typechecker_passes(text)
+
+
+@pytest.mark.parametrize('initial_value, modifier', (
+    ('2', '"hi"'),
+    ('2', '"3.0"'),
+    ('2', '"[1, 2, 3]"'),
+    ('2', '"[[1, 2], [3, 4]]"'),
+    ('3.0', '"hi"'),
+    ('3.0', '"[1, 2, 3]"'),
+    ('3.0', '"[[1, 2], [3, 4]]"'),
+    ('[1, 2, 3]', '"hi"'),
+    ('[1, 2, 3]', '"[[1, 2], [3, 4]]"'),
+    ('[[1, 2], [3, 4]]', '"hi"'),
+))
+def test_cannot_modify_value(initial_value, modifier):
+    text = f"""
+    a = {initial_value};
+    a += {modifier};
+    """
+    assert typechecker_fails(text)

@@ -154,14 +154,18 @@ class TypeChecker(NodeVisitor):
                 self.visit(node.right)
                 # TODO: check if assignable
 
-        # TODO: handle also +=, -=, *=, /=
         if node.op in ('+=', '-=', '*=', '/='):
             if isinstance(node.left, AST.Variable):
                 variable_node = node.left
                 try:
                     variable_symbol = self.table.get(variable_node.name)
+                    modifier_symbol = self.visit(node.right)
+
                     if 'loop_variable' in variable_symbol.params and variable_symbol.params['loop_variable']:
                         self.error(f'cannot modify value of loop variable {variable_node.name}', variable_node.lineno)
+                    elif 'unknown' not in {variable_symbol.type, modifier_symbol.type} and variable_symbol.type != modifier_symbol.type:
+                        # TODO: include vectors length, matrix shape etc. (maybe create classes for types and add compatibility function)
+                        self.error(f'cannot modify variable {variable_node.name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
                 except KeyError:
                     self.error(f'variable {variable_name} not defined', variable_node.lineno)
 
