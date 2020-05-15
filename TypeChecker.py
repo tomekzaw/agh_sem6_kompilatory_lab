@@ -37,7 +37,7 @@ class TypeChecker(NodeVisitor):
         # self.visit(node.variable)
         self.visit(node.range_)
         self.loops += 1
-        self.table.put(node.variable.name, Symbol('int'))
+        self.table.put(node.variable.name, Symbol('int'))  # TODO: fix
         self.visit(node.instruction)
         self.table.remove(node.variable.name)
         self.loops -= 1
@@ -254,16 +254,18 @@ class TypeChecker(NodeVisitor):
         return Symbol('vector', params={'length': len(node.elements)})
 
     def visit_MatrixSpecialFunction(self, node):
-        # TODO: check non-negativity
-
         rows_symbol = self.visit(node.rows)
         if rows_symbol.type not in ('unknown', 'int'):
             self.error(f'number of rows must be int', node.rows.lineno)
+        elif rows_symbol.value is not None and rows_symbol.value < 0:
+            self.error(f'number of rows must non-negative', node.rows.lineno)
 
         if node.cols is not None:
             cols_symbol = self.visit(node.cols)
             if cols_symbol.type not in ('unknown', 'int'):
                 self.error(f'number of columns must be int', node.cols.lineno)
+            elif cols_symbol.value is not None and cols_symbol.value < 0:
+                self.error(f'number of columns must non-negative', node.cols.lineno)
 
         rows_value = rows_symbol.value
         cols_value = cols_symbol.value if node.cols is not None else rows_value

@@ -1,6 +1,5 @@
 import pytest
-from Mparser import parser
-from TypeChecker import TypeChecker
+from utils import typechecker_passes, typechecker_fails
 
 
 @pytest.mark.parametrize('text', (
@@ -20,11 +19,8 @@ from TypeChecker import TypeChecker
     }
     """,
 ))
-def test_break_continue_pass(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert typeChecker.errorok
+def test_break_continue_inside_loop(text):
+    assert typechecker_passes(text)
 
 
 @pytest.mark.parametrize('text', (
@@ -47,8 +43,5 @@ def test_break_continue_pass(text):
     c = 4;
     """,
 ))
-def test_break_continue_fail(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert not typeChecker.errorok
+def test_break_continue_outside_loop(text):
+    assert typechecker_fails(text)

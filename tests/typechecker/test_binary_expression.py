@@ -1,6 +1,5 @@
 import pytest
-from Mparser import parser
-from TypeChecker import TypeChecker
+from utils import typechecker_passes, typechecker_fails
 
 
 @pytest.mark.parametrize('text', (
@@ -28,10 +27,7 @@ from TypeChecker import TypeChecker
     "foo = ones(3, 4) .+ eye(3, 4);",
 ))
 def test_binary_expression_pass(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert typeChecker.errorok
+    assert typechecker_passes(text)
 
 
 @pytest.mark.parametrize('text', (
@@ -50,9 +46,12 @@ def test_binary_expression_pass(text):
     ''',
 
     "foo = ones(3, 4) .+ eye(5, 6);",
+
+    '''
+    A = ones(3, 4);
+    B = eye(5, 6);
+    foo = A .+ B;
+    ''',
 ))
 def test_binary_expression_fail(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert not typeChecker.errorok
+    assert typechecker_fails(text)

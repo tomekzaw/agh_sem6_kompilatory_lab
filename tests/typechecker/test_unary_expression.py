@@ -1,6 +1,5 @@
 import pytest
-from Mparser import parser
-from TypeChecker import TypeChecker
+from utils import typechecker_passes, typechecker_fails
 
 
 @pytest.mark.parametrize('text', (
@@ -26,11 +25,7 @@ from TypeChecker import TypeChecker
     "foo = [ [1, 2, 3] ]'';",
 ))
 def test_unary_expression_pass(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert typeChecker.errorok
-
+    assert typechecker_passes(text)
 
 @pytest.mark.parametrize('text', (
     'foo = -"Hello";',
@@ -40,7 +35,4 @@ def test_unary_expression_pass(text):
     "foo = [0, 0, 0]';",
 ))
 def test_unary_expression_fail(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert not typeChecker.errorok
+    assert typechecker_fails(text)

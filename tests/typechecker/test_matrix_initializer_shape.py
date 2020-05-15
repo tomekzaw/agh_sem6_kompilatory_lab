@@ -1,6 +1,5 @@
 import pytest
-from Mparser import parser
-from TypeChecker import TypeChecker
+from utils import typechecker_passes, typechecker_fails
 
 
 @pytest.mark.parametrize('text', (
@@ -21,10 +20,7 @@ from TypeChecker import TypeChecker
     """,
 ))
 def test_matrix_initializer_shape_pass(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert typeChecker.errorok
+    assert typechecker_passes(text)
 
 
 @pytest.mark.parametrize('text', (
@@ -48,7 +44,4 @@ def test_matrix_initializer_shape_pass(text):
     """,
 ))
 def test_matrix_initializer_shape_fail(text):
-    ast = parser.parse(text)
-    typeChecker = TypeChecker()
-    typeChecker.visit(ast)
-    assert not typeChecker.errorok
+    assert typechecker_fails(text)
