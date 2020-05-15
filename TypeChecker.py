@@ -29,9 +29,46 @@ class TypeChecker(NodeVisitor):
 
     def visit_If(self, node):
         self.visit(node.condition)
-        self.visit(node.instruction_then)
-        if node.instruction_else is not None:
+        if node.instruction_else is None:
+            self.visit(node.instruction_then)
+        else:
+            self.table.pushScope('then')
+            self.visit(node.instruction_then)
+            then_scope = self.table.popScope()
+
+            self.table.pushScope('else')
             self.visit(node.instruction_else)
+            else_scope = self.table.popScope()
+
+            for name in set(then_scope.symbols.keys()) & set(else_scope.symbols.keys()):
+                symbol1 = then_scope.symbols[name]
+                symbol2 = else_scope.symbols[name]
+                type1 = symbol1.type
+                type2 = symbol2.type
+                if {type1, type2} != 'unknown':
+                    if type1 != type2:
+                        self.error(f'variable {name} can be either {type1} or {type2}', node.instruction_then.lineno)
+                        else_scope.symbols[name] = Symbol('unknown')
+                    elif type1 == 'vector':
+                        if 'length' in symbol1.params.keys() & symbol2.params.keys():
+                            length1 = symbol1.params['length']
+                            length2 = symbol2.params['length']
+                            self.error(f'{name} vector can have length of either {length1} or {length2}', node.instruction_then.lineno)
+                            del else_scope.symbols[name].params['length']
+                    elif type1 == 'matrix':
+                        if 'rows' in symbol1.params.keys() & symbol2.params.keys():
+                            rows1 = symbol1.params['rows']
+                            rows2 = symbol2.params['rows']
+                            self.error(f'{name} matrix can have either {rows1} or {rows2} rows', node.instruction_then.lineno)
+                            del else_scope.symbols[name].params['rows']
+                        if 'cols' in symbol1.params.keys() & symbol2.params.keys():
+                            cols1 = symbol1.params['cols']
+                            cols2 = symbol2.params['cols']
+                            self.error(f'{name} matrix can have either {cols1} or {cols2} cols', node.instruction_then.lineno)
+                            del else_scope.symbols[name].params['cols']
+                # TODO: vector, matrix
+
+            self.table.current_scope.symbols.update({**then_scope.symbols, **else_scope.symbols})
 
     def visit_For(self, node):
         # self.visit(node.variable)

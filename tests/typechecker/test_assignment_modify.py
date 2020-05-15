@@ -1,15 +1,15 @@
 import pytest
-from itertools import product
+from itertools import combinations
 from utils import typechecker_passes, typechecker_fails
 
 
-@pytest.mark.parametrize('value1, value2', product((
+@pytest.mark.parametrize('value1, value2', combinations((
     '2',
     '3.0',
     '"hello"',
     '[1, 2, 3]',
     '[[1, 2], [3, 4]]',
-), repeat=2))
+), 2))
 def test_cannot_overwrite_with_other_type(value1, value2):
     text = f"""
     a = {value1};
@@ -33,11 +33,11 @@ def test_cannot_overwrite_with_same_type_but_different_value(value1, value2):
     assert typechecker_fails(text)
 
 
-@pytest.mark.parametrize('value1, value2', product(('2', '3.0', '"hello"', '[1, 2, 3]', '[[1, 2], [3, 4]]'), repeat=2))
-def test_cannot_overwrite_with_same_type_and_value(value1, value2):
+@pytest.mark.parametrize('value', ('2', '3.0', '"hello"', '[1, 2, 3]', '[[1, 2], [3, 4]]'))
+def test_cannot_overwrite_with_same_type_and_value(value):
     text = f"""
-    a = {value1};
-    a = {value2};
+    a = {value};
+    a = {value};
     """
     assert typechecker_fails(text)
 

@@ -56,15 +56,13 @@ class SymbolTable:
             scope = scope.parent
         raise KeyError
 
-    # def getParentScope(self):
-    #     return self.parent
+    def getParentScope(self) -> Optional[Scope]:
+        return self.parent
 
     def pushScope(self, name: str):
         self.current_scope = Scope(name, self.current_scope)
 
-    def popScope(self):
-        parent = self.current_scope.parent
-        if parent is None:
-            raise
-        del self.current_scope
-        self.current_scope = parent
+    def popScope(self) -> Optional[Scope]:
+        current_scope = self.current_scope
+        self.current_scope = current_scope.parent
+        return current_scope
