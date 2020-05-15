@@ -104,7 +104,7 @@ class TypeChecker(NodeVisitor):
                 try:
                     self.table.put(variable.name, right_symbol)
                 except KeyError:
-                    self.error(f'variable {variable.name} already has assigned value')
+                    self.error(f'variable {variable.name} already has assigned value', variable.lineno)
 
             elif isinstance(node.left, AST.Reference):
                 self.visit(node.left, as_rvalue=False)
