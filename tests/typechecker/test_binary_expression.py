@@ -47,11 +47,11 @@ def test_binary_expression_pass(text):
 
     "foo = ones(3, 4) .+ eye(5, 6);",
 
-    '''
+    """
     A = ones(3, 4);
     B = eye(5, 6);
     foo = A .+ B;
-    ''',
+    """,
 ))
 def test_binary_expression_fail(text):
     assert typechecker_fails(text)

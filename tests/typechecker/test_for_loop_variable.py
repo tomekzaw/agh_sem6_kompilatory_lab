@@ -33,34 +33,34 @@ def test_cannot_modify_loop_variable():
 
 
 def test_loop_variable_available_only_inside_loop():
-    text = '''
+    text = """
     for i = 1:10 {
         print(i);
     }
     print(i);
-    '''
+    """
     assert typechecker_fails(text)
 
 
 def test_outer_loop_variable_as_inner_loop_range():
-    text = '''
+    text = """
     for i = 1:10 {
         for j = i:10 {
             print(i, j);
         }
     }
-    '''
+    """
     assert typechecker_passes(text)
 
 
 @pytest.mark.xfail
 def test_two_loops_same_variable():
-    text = '''
+    text = """
     for i = 1:10 {
         for i = 1:10 {
             print(i);
         }
     }
-    '''
+    """
     assert typechecker_fails(text)
 
