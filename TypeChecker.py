@@ -91,7 +91,7 @@ class TypeChecker(NodeVisitor):
                 self.error(f'cannot return {value_type}, must return int or nothing', node.value.lineno)
 
     def visit_Print(self, node):
-        for arg in args:
+        for arg in node.args:
             arg_type = self.visit(arg).type
             if arg_type == 'range':
                 self.error(f'cannot print {arg_type}', arg.lineno)
