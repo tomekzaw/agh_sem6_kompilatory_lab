@@ -1,4 +1,3 @@
-import pytest
 from Mparser import parser
 from AST import *
 

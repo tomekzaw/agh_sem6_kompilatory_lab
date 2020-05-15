@@ -1,5 +1,5 @@
 import pytest
-from utils import typechecker_passes, typechecker_fails
+from utils import typechecker_fails
 
 
 @pytest.mark.parametrize('text', (

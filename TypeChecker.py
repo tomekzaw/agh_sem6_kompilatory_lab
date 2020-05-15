@@ -124,10 +124,9 @@ class TypeChecker(NodeVisitor):
                 try:
                     variable_symbol = self.table.get(variable_node.name)
                     if 'loop_variable' in variable_symbol.params and variable_symbol.params['loop_variable']:
-                        self.error(f'cannot modify value of loop variable', variable_node.lineno)
+                        self.error(f'cannot modify value of loop variable {variable_node.name}', variable_node.lineno)
                 except KeyError:
                     self.error(f'variable {variable_name} not defined', variable_node.lineno)
-
 
     def visit_Variable(self, node):
         # as rvalue or reference only
@@ -147,7 +146,7 @@ class TypeChecker(NodeVisitor):
         for index in node.indices:
             index_type = self.visit(index).type
             if index_type not in ('int', 'range', 'unknown'):
-                self.error(f'index must be int or range', index.lineno)
+                self.error('index must be int or range', index.lineno)
 
         return Symbol('unknown')  # TODO: detect row, column or cell
 
@@ -250,7 +249,7 @@ class TypeChecker(NodeVisitor):
         for element in node.elements:
             element_type = self.visit(element).type
             if element_type not in ('unknown', 'int', 'float', 'vector'):
-                self.error(f'vector element must be int or float', element.lineno)
+                self.error(f'vector element must be int or float, not {element_type}', element.lineno)
             elements_types.add(element_type)
 
         if 'matrix' in elements_types:
@@ -261,9 +260,9 @@ class TypeChecker(NodeVisitor):
             if elements_types == {'vector'}:
                 lengths = {len(element.elements) for element in node.elements}
                 if len(lengths) > 1:
-                    self.error(f'matrix rows must be the same length', node.elements[0].lineno)
+                    self.error('matrix rows must be the same length', node.elements[0].lineno)
             else:
-                self.error(f'matrix rows must be vectors', node.elements[0].lineno)
+                self.error('matrix rows must be vectors', node.elements[0].lineno)
 
             return Symbol('matrix', params={'rows': len(node.elements), 'cols': len(node.elements[0].elements)})
 
@@ -272,16 +271,16 @@ class TypeChecker(NodeVisitor):
     def visit_MatrixSpecialFunction(self, node):
         rows_symbol = self.visit(node.rows)
         if rows_symbol.type not in ('unknown', 'int'):
-            self.error(f'number of rows must be int', node.rows.lineno)
+            self.error('number of rows must be int', node.rows.lineno)
         elif rows_symbol.value is not None and rows_symbol.value < 0:
-            self.error(f'number of rows must non-negative', node.rows.lineno)
+            self.error('number of rows must non-negative', node.rows.lineno)
 
         if node.cols is not None:
             cols_symbol = self.visit(node.cols)
             if cols_symbol.type not in ('unknown', 'int'):
-                self.error(f'number of columns must be int', node.cols.lineno)
+                self.error('number of columns must be int', node.cols.lineno)
             elif cols_symbol.value is not None and cols_symbol.value < 0:
-                self.error(f'number of columns must non-negative', node.cols.lineno)
+                self.error('number of columns must non-negative', node.cols.lineno)
 
         rows_value = rows_symbol.value
         cols_value = cols_symbol.value if node.cols is not None else rows_value

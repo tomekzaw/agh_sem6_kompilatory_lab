@@ -95,6 +95,7 @@ def test_transpose(text):
         ])
     )
 
+
 @pytest.mark.parametrize('text', (
     "foo = A'';",
     "foo = A' ';",

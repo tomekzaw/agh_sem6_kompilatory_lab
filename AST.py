@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 from scanner import lexer
 
+
 @dataclass
 class Node(object):
     def __new__(cls, *args, **kwargs):
@@ -13,17 +14,21 @@ class Node(object):
     # def children(self):
     #     return self.__dict__.values()
 
+
 @dataclass
 class Program(Node):
     instructions: Any
+
 
 @dataclass
 class Instructions(Node):
     instructions: Any
 
+
 # @dataclass
 # class EmptyInstruction(Node):
 #     pass
+
 
 @dataclass
 class If(Node):
@@ -31,21 +36,25 @@ class If(Node):
     instruction_then: Any
     instruction_else: Any = None
 
+
 @dataclass
 class For(Node):
     variable: Any
     range_: Any
     instruction: Any
 
+
 @dataclass
 class Range(Node):
     start: Any
     end: Any
 
+
 @dataclass
 class While(Node):
     condition: Any
     instruction: Any
+
 
 @dataclass
 class Condition(Node):
@@ -53,21 +62,26 @@ class Condition(Node):
     left: Any
     right: Any
 
+
 @dataclass
 class Break(Node):
     pass
+
 
 @dataclass
 class Continue(Node):
     pass
 
+
 @dataclass
 class Return(Node):
     value: Any = None
 
+
 @dataclass
 class Print(Node):
     args: Any
+
 
 @dataclass
 class Assignment(Node):
@@ -75,14 +89,17 @@ class Assignment(Node):
     left: Any
     right: Any
 
+
 @dataclass
 class Variable(Node):
     name: Any
+
 
 @dataclass
 class Reference(Node):
     variable: Any
     indices: Any
+
 
 @dataclass
 class BinExpr(Node):
@@ -90,51 +107,63 @@ class BinExpr(Node):
     left: Any
     right: Any
 
+
 @dataclass
 class UnaryExpr(Node):
     op: Any
     expr: Any
 
+
 @dataclass
 class Constant(Node):
     value: Any
+
 
 @dataclass
 class IntNum(Constant):
     pass
 
+
 @dataclass
 class FloatNum(Constant):
     pass
+
 
 @dataclass
 class String(Constant):
     pass
 
+
 # @dataclass
 # class Matrix(Node):
 #     rows: list
 
+
 @dataclass
 class Vector(Node):
     elements: list
+
 
 @dataclass
 class MatrixSpecialFunction(Node):
     rows: Any
     cols: Any = None
 
+
 @dataclass
 class Eye(MatrixSpecialFunction):
     pass
+
 
 @dataclass
 class Zeros(MatrixSpecialFunction):
     pass
 
+
 @dataclass
 class Ones(MatrixSpecialFunction):
     pass
+
 
 @dataclass
 class Error(Node):

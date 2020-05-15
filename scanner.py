@@ -56,11 +56,13 @@ t_EQ = r'=='
 t_ignore = ' \t'
 t_ignore_COMMENT = r'\#.*'
 
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     # or: r'[a-zA-Z_]\w*' for short, since \w also matches underscore (_)
     t.type = reserved.get(t.value, 'ID')
     return t
+
 
 def t_FLOATNUM(t):
     r'((\d+\.\d*|\.\d+)([eE][-+]?\d+)?|(\d+([eE][-+]?\d+)))'  # allows 1e42
@@ -68,11 +70,13 @@ def t_FLOATNUM(t):
     t.value = float(t.value)
     return t
 
+
 def t_INTNUM(t):
     r'\d+'  # allows leading zeros
     # or: r'([1-9]\d*|0)' to disallow leading zeros
     t.value = int(t.value)
     return t
+
 
 def t_STRING(t):
     r'\"(.*?[^\\])??\"'  # for single-line strings, including empty string ("")
@@ -82,17 +86,21 @@ def t_STRING(t):
     t.value = t.value[1:-1].replace(r'\"', '"').replace(r"\\", "\\")
     return t
 
+
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
 
 def t_error(t):
     print("(%d): illegal character '%s'" % (t.lineno, t.value[0]), file=sys.stderr)
     t.lexer.skip(1)
 
+
 def find_column(input, token):
     line_start = input.rfind('\n', 0, token.lexpos) + 1
     return (token.lexpos - line_start) + 1
+
 
 def find_tok_column(token):
     last_cr = lexer.lexdata.rfind('\n', 0, token.lexpos)
@@ -100,7 +108,9 @@ def find_tok_column(token):
         last_cr = 0
     return token.lexpos - last_cr
 
+
 lexer = lex.lex()
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

@@ -1,4 +1,3 @@
-import pytest
 from utils import typechecker_passes, typechecker_fails
 
 
@@ -60,4 +59,3 @@ def test_two_loops_same_variable():
     }
     """
     assert typechecker_fails(text)
-

@@ -1,5 +1,4 @@
 import pytest
-from itertools import product
 from Mparser import parser
 from AST import *
 
@@ -25,7 +24,7 @@ def test_expression_group_unary():
 
 
 def test_expression_group_binary():
-    text = f"foo = (123 + 456) * 789;"
+    text = "foo = (123 + 456) * 789;"
     ast = parser.parse(text)
     assert ast == Program(
         Instructions([

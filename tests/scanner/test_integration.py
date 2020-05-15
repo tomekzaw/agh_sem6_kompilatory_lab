@@ -33,7 +33,7 @@ def test_digit_dot_op_digit(lexer_input):
     (1)(.+)(2) vs. (1.)(+)(2) vs. (1.)(+2)
     """
     lexer.input(lexer_input)
-    tokens = list(lexer)
+    # tokens = list(lexer)
 
     pass  # no requirements specified
 

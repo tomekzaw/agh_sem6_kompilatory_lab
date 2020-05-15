@@ -1,7 +1,7 @@
 import sys
-from scanner import lexer, find_column
+from scanner import lexer, find_column  # noqa
 from Mparser import parser
-from TreePrinter import TreePrinter
+from TreePrinter import TreePrinter  # noqa
 from TypeChecker import TypeChecker
 
 if __name__ == '__main__':

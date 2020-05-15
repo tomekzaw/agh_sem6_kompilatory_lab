@@ -27,6 +27,7 @@ from utils import typechecker_passes, typechecker_fails
 def test_unary_expression_pass(text):
     assert typechecker_passes(text)
 
+
 @pytest.mark.parametrize('text', (
     'foo = -"Hello";',
 
