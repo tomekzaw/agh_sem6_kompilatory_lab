@@ -179,12 +179,12 @@ class TypeChecker(NodeVisitor):
                 params = {}
 
                 if left_rows is not None and right_rows is not None and left_rows != right_rows:
-                    self.error(f'matrices have different number of rows ({left_rows} vs. {right_rows}', node.left.lineno)
+                    self.error(f'matrices have different number of rows ({left_rows} vs. {right_rows})', node.left.lineno)
                 else:
                     params['rows'] = left_rows
 
                 if left_cols is not None and right_cols is not None and left_cols != right_cols:
-                    self.error(f'matrices have different number of columns ({left_cols} vs. {right_cols}', node.left.lineno)
+                    self.error(f'matrices have different number of columns ({left_cols} vs. {right_cols})', node.left.lineno)
                 else:
                     params['cols'] = left_cols
 
