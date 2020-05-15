@@ -2,7 +2,6 @@ import pytest
 from utils import typechecker_passes, typechecker_fails
 
 
-@pytest.mark.xfail
 def test_loop_variable_cannot_overwrite():
     text = """
     i = 42;
@@ -22,7 +21,6 @@ def test_cannot_assign_to_loop_variable():
     assert typechecker_fails(text)
 
 
-@pytest.mark.xfail
 def test_cannot_modify_loop_variable():
     text = """
     for i = 1:10 {
@@ -53,7 +51,6 @@ def test_outer_loop_variable_as_inner_loop_range():
     assert typechecker_passes(text)
 
 
-@pytest.mark.xfail
 def test_two_loops_same_variable():
     text = """
     for i = 1:10 {

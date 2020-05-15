@@ -12,7 +12,6 @@ from utils import typechecker_passes, typechecker_fails
     """
     for i = 1:10 {
         while (i < 10) {
-            i += 1;
             continue;
         }
         break;

@@ -30,10 +30,10 @@ def test_variable_available_outside_control_statement(text):
     assert typechecker_passes(text)
 
 
-@pytest.mark.xfail
 @pytest.mark.parametrize('text', (
     """
-    for i = 1:10 a = 2;
+    for i = 1:10
+        a = 2;
     print(a);
     """,
 

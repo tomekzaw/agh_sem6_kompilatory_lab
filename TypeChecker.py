@@ -37,9 +37,14 @@ class TypeChecker(NodeVisitor):
         # self.visit(node.variable)
         self.visit(node.range_)
         self.loops += 1
-        self.table.put(node.variable.name, Symbol('int'))  # TODO: fix
+        self.table.pushScope('for')
+        loop_variable_name = node.variable.name
+        if self.table.has(loop_variable_name):
+            self.error(f'cannot override variable {loop_variable_name}', node.variable.lineno)
+        self.table.put(loop_variable_name, Symbol('int', params={'loop_variable': True}))
         self.visit(node.instruction)
-        self.table.remove(node.variable.name)
+        # self.table.remove(node.variable.name)
+        self.table.popScope()
         self.loops -= 1
 
     def visit_Range(self, node):
@@ -55,9 +60,11 @@ class TypeChecker(NodeVisitor):
 
     def visit_While(self, node):
         self.visit(node.condition)
+        self.table.pushScope('while')
         self.loops += 1
         self.visit(node.instruction)
         self.loops -= 1
+        self.table.popScope()
 
     def visit_Condition(self, node):
         left_type = self.visit(node.left).type
@@ -78,11 +85,11 @@ class TypeChecker(NodeVisitor):
 
     def visit_Break(self, node):
         if not self.loops:
-            self.error('cannot use break outside loop', node.lineno)
+            self.error('break statement not within loop', node.lineno)
 
     def visit_Continue(self, node):
         if not self.loops:
-            self.error('cannot use continue outside loop', node.lineno)
+            self.error('continue statement not within loop', node.lineno)
 
     def visit_Return(self, node):
         if node.value is not None:
@@ -101,10 +108,9 @@ class TypeChecker(NodeVisitor):
             if isinstance(node.left, AST.Variable):
                 variable = node.left
                 right_symbol = self.visit(node.right)
-                try:
-                    self.table.put(variable.name, right_symbol)
-                except KeyError:
-                    self.error(f'variable {variable.name} already has assigned value', variable.lineno)
+                if self.table.has(variable.name):
+                    self.error(f'cannot overwrite variable {variable.name}', variable.lineno)
+                self.table.put(variable.name, right_symbol)
 
             elif isinstance(node.left, AST.Reference):
                 self.visit(node.left, as_rvalue=False)
@@ -112,9 +118,19 @@ class TypeChecker(NodeVisitor):
                 # TODO: check if assignable
 
         # TODO: handle also +=, -=, *=, /=
+        if node.op in ('+=', '-=', '*=', '/='):
+            if isinstance(node.left, AST.Variable):
+                variable_node = node.left
+                try:
+                    variable_symbol = self.table.get(variable_node.name)
+                    if 'loop_variable' in variable_symbol.params and variable_symbol.params['loop_variable']:
+                        self.error(f'cannot modify value of loop variable', variable_node.lineno)
+                except KeyError:
+                    self.error(f'variable {variable_name} not defined', variable_node.lineno)
+
 
     def visit_Variable(self, node):
-        # as rvalue only
+        # as rvalue or reference only
         variable_name = node.name
         try:
             return self.table.get(variable_name)
