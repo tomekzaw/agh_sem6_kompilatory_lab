@@ -1,13 +1,70 @@
 #!/usr/bin/python
 from dataclasses import dataclass, field
 from typing import Any, Optional
+from abc import ABC
+
+
+class Type(ABC):
+    def __repr__(self):
+        return f'{self.__class__.__name__.lower()}'
+
+    def __eq__(self, other):
+        if isinstance(self, Unknown) or isinstance(other, Unknown):
+            return True
+        if not self.__class__ == other.__class__:
+            return False
+        for key in self.__dict__.keys() & other.__dict__.keys():
+            if self.__dict__[key] is not None and other.__dict__[key] is not None and self.__dict__[key] != other.__dict__[key]:
+                return False
+        return True
+
+
+class Unknown(Type):
+    pass
+
+
+class Int(Type):
+    pass
+
+
+class Float(Type):
+    pass
+
+
+class String(Type):
+    pass
+
+
+class Range(Type):
+    pass
+
+
+@dataclass(eq=False)
+class Vector(Type):
+    length: Optional[int] = None
+
+
+@dataclass(eq=False)
+class Matrix(Type):
+    rows: Optional[int] = None
+    cols: Optional[int] = None
+
+    # @property
+    # def transposed(self):
+    #     return self.__class__(rows=self.cols, cols=self.rows)
+
+
+# class Union(Type):
+#     def __init__(self, *types: Type):
+#         self.types = types
+#     # TODO: implement __eq__
 
 
 @dataclass
 class Symbol(object):
-    type: str = 'unknown'  # 'int', 'float', 'string', 'range', 'vector', 'matrix', 'unknown'
-    params: dict = field(default_factory=dict)  # 'length', 'rows', 'cols', 'loop_variable'
+    type: Type = field(default_factory=Unknown)
     value: Any = None  # None means unknown value
+    readonly: bool = False  # for loop variables
 
 
 @dataclass
