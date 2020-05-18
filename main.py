@@ -3,13 +3,26 @@ from scanner import lexer, find_column  # noqa
 from Mparser import parser
 from TreePrinter import TreePrinter  # noqa
 from TypeChecker import TypeChecker
+from itertools import count
+
+
+def read():
+    # return sys.stdin.read()
+    text = ""
+    for ln in count(1):
+        try:
+            text += input(f'{ln:>4d} |  ') + '\n'
+        except (RuntimeError, EOFError):
+            break
+    return text
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         with open(sys.argv[1], 'r') as f:
             text = f.read()
     else:
-        text = sys.stdin.read()
+        text = read()
 
     # lexer.input(text)
     # for token in lexer:
