@@ -11,11 +11,21 @@ class Type(ABC):
     def __eq__(self, other):
         if isinstance(self, Unknown) or isinstance(other, Unknown):
             return True
+
+        if isinstance(other, Union):
+           return any(map(self.__eq__, other.types))
+           # return any(type == other for type in self.types)
+
+        if isinstance(self, Union):
+            return other == self
+
         if not self.__class__ == other.__class__:
             return False
+
         for key in self.__dict__.keys() & other.__dict__.keys():
             if self.__dict__[key] is not None and other.__dict__[key] is not None and self.__dict__[key] != other.__dict__[key]:
                 return False
+
         return True
 
 
@@ -54,10 +64,12 @@ class Matrix(Type):
     #     return self.__class__(rows=self.cols, cols=self.rows)
 
 
-# class Union(Type):
-#     def __init__(self, *types: Type):
-#         self.types = types
-#     # TODO: implement __eq__
+class Union(Type):
+    def __init__(self, *types: Type):
+        self.types = types
+
+    def __repr__(self):
+        return 'Union[' + ', '.join(map(repr, self.types)) + ']'
 
 
 @dataclass
