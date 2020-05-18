@@ -13,7 +13,7 @@ class Symbol(object):
 @dataclass
 class Scope:
     name: str = '__main__'
-    parent: Optional['SymbolTable'] = None
+    parent: Optional['Scope'] = None
     symbols: dict = field(default_factory=dict)
 
 
