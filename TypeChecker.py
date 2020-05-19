@@ -57,7 +57,7 @@ class TypeChecker(NodeVisitor):
 
         loop_variable_name = node.variable.name
         if self.table.has(loop_variable_name):
-            self.error(f'loop variable cannot override existing variable', node.variable.lineno)
+            self.error('loop variable cannot override existing variable', node.variable.lineno)
         self.table.put(loop_variable_name, Symbol(Int(), readonly=True))
         self.visit(node.instruction)
         # self.table.remove(node.variable.name)  # will be automatically deleted
@@ -206,7 +206,7 @@ class TypeChecker(NodeVisitor):
 
             if isinstance(left_type, Matrix) and isinstance(right_type, Matrix):
                 if left_type != right_type:
-                    self.error(f'matrices have different shape', node.left.lineno)
+                    self.error('matrices have different shape', node.left.lineno)
                     return Symbol(type=Matrix())
                 else:
                     return Symbol(type=Matrix(rows=left_type.rows, cols=left_type.cols))
@@ -253,7 +253,7 @@ class TypeChecker(NodeVisitor):
 
         for element in node.elements:
             element_type = self.visit(element).type
-            if not isinstance(element_type, (Unknown, Int, Float, Vector)):
+            if element_type != Union(Int(), Float(), Vector()):
                 self.error(f'vector element must be int or float, not {element_type}', element.lineno)
             elements_types.append(element_type.__class__)
 
@@ -275,14 +275,14 @@ class TypeChecker(NodeVisitor):
 
     def visit_MatrixSpecialFunction(self, node):
         rows_symbol = self.visit(node.rows)
-        if rows_symbol.type.__class__ not in (Unknown, Int):
+        if rows_symbol.type != Union(Unknown(), Int()):
             self.error('number of rows must be int', node.rows.lineno)
         elif rows_symbol.value is not None and rows_symbol.value < 0:
             self.error('number of rows must be non-negative', node.rows.lineno)
 
         if node.cols is not None:
             cols_symbol = self.visit(node.cols)
-            if cols_symbol.type.__class__ not in (Unknown, Int):
+            if cols_symbol.type != Union(Unknown(), Int()):
                 self.error('number of columns must be int', node.cols.lineno)
             elif cols_symbol.value is not None and cols_symbol.value < 0:
                 self.error('number of columns must non-negative', node.cols.lineno)

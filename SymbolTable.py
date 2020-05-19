@@ -9,12 +9,12 @@ class Type(ABC):
         return f'{self.__class__.__name__.lower()}'
 
     def __eq__(self, other):
-        if isinstance(self, Unknown) or isinstance(other, Unknown):
-            return True
+        # if isinstance(self, Unknown) or isinstance(other, Unknown):
+        #     return True
 
         if isinstance(other, Union):
-           return any(map(self.__eq__, other.types))
-           # return any(type == other for type in self.types)
+            return any(map(self.__eq__, other.types))
+            # return any(type == other for type in self.types)
 
         if isinstance(self, Union):
             return other == self
