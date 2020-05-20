@@ -43,7 +43,7 @@ class TypeChecker(NodeVisitor):
             for name in then_scope.symbols.keys() & else_scope.symbols.keys():
                 type1 = then_scope.symbols[name].type
                 type2 = else_scope.symbols[name].type
-                if type1 != type2:
+                if type1 != Unknown() and type2 != Unknown() and type1 != type2:
                     self.error(f'variable {name} can be either {type1} or {type2}', node.instruction_then.lineno)
                     else_scope.symbols[name] = Symbol(type=Unknown())
 
@@ -59,6 +59,7 @@ class TypeChecker(NodeVisitor):
         if self.table.has(loop_variable_name):
             self.error('loop variable cannot override existing variable', node.variable.lineno)
         self.table.put(loop_variable_name, Symbol(Int(), readonly=True))
+
         self.visit(node.instruction)
         # self.table.remove(node.variable.name)  # will be automatically deleted
 
@@ -67,11 +68,11 @@ class TypeChecker(NodeVisitor):
 
     def visit_Range(self, node):
         start_type = self.visit(node.start).type
-        if start_type != Int():
+        if start_type != Union(Int(), Unknown()):
             self.error('range start must be int', node.start.lineno)
 
         end_type = self.visit(node.end).type
-        if end_type != Int():
+        if end_type != Union(Int(), Unknown()):
             self.error('range end must be int', node.end.lineno)
 
         return Symbol(type=Range())
@@ -88,14 +89,14 @@ class TypeChecker(NodeVisitor):
         type1 = self.visit(node.left).type
         type2 = self.visit(node.right).type
 
-        if isinstance(type1, Unknown) or isinstance(type2, Unknown):
+        if type1 == Unknown() or type2 == Unknown():
             return
 
         if node.op in ('==', '!='):
             return
 
         if node.op in ('<', '>', '<=', '>='):
-            if isinstance(type1, (Int, Float)) and isinstance(type2, (Int, Float)):
+            if type1 == Union(Int(), Float()) and type2 == Union(Int(), Float()):
                 return
 
         self.error(f'cannot perform: {type1} {node.op} {type2}', node.left.lineno)
@@ -111,13 +112,13 @@ class TypeChecker(NodeVisitor):
     def visit_Return(self, node):
         if node.value is not None:
             value_type = self.visit(node.value).type
-            if value_type != Int():  # exit code
+            if value_type != Union(Int(), Unknown()):  # exit code
                 self.error(f'cannot return {value_type}, must return int or nothing', node.value.lineno)
 
     def visit_Print(self, node):
         for arg in node.args:
             arg_type = self.visit(arg).type
-            if arg_type == Range():
+            if arg_type != Union(Int(), Float(), String(), Vector(), Matrix(), Unknown()):
                 self.error(f'cannot print {arg_type}', arg.lineno)
 
     def visit_Assignment(self, node):
@@ -126,8 +127,14 @@ class TypeChecker(NodeVisitor):
                 variable = node.left
                 right_symbol = self.visit(node.right)
                 if self.table.has(variable.name):  # handles loop variables too
-                    self.error(f'cannot overwrite variable {variable.name}', variable.lineno)
-                self.table.put(variable.name, right_symbol)
+                    variable_symbol = self.table.get(variable.name)
+                    if variable_symbol.readonly:
+                        self.error(f'cannot overwrite loop variable {variable.name}', variable.lineno)
+                    elif variable_symbol.type != right_symbol.type:
+                        self.error(f'cannot overwrite variable {variable.name} of type {variable_symbol.type} with {right_symbol.type}', variable.lineno)
+                    self.table.put(variable.name, Symbol(type=Unknown()))
+                else:
+                    self.table.put(variable.name, right_symbol)
 
             elif isinstance(node.left, AST.Reference):
                 self.visit(node.left, as_rvalue=False)
@@ -137,19 +144,23 @@ class TypeChecker(NodeVisitor):
         if node.op in ('+=', '-=', '*=', '/='):
             if isinstance(node.left, AST.Variable):
                 variable_node = node.left
+                variable_name = variable_node.name
                 try:
-                    variable_symbol = self.table.get(variable_node.name)
+                    variable_symbol = self.table.get(variable_name)
                     modifier_symbol = self.visit(node.right)
 
                     if variable_symbol.readonly:
-                        self.error(f'cannot modify value of loop variable {variable_node.name}', variable_node.lineno)
+                        self.error(f'cannot modify value of loop variable {variable_name}', variable_node.lineno)
 
                     if variable_symbol.type != modifier_symbol.type:
-                        # TODO: include vectors length, matrix shape etc. (maybe create classes for types and add compatibility function)
-                        self.error(f'cannot modify variable {variable_node.name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
+                        self.error(f'cannot modify variable {variable_name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
 
                 except KeyError:
                     self.error(f'variable {variable_name} not defined', variable_node.lineno)
+
+            elif isinstance(node.left, AST.Reference):
+                # TODO: handle reference
+                pass
 
     def visit_Variable(self, node):
         # as rvalue or reference only
@@ -163,13 +174,13 @@ class TypeChecker(NodeVisitor):
     def visit_Reference(self, node, as_rvalue=True):
         variable_type = self.visit(node.variable).type
 
-        if isinstance(variable_type, (Int, Float, String)):
+        if variable_type != Union(Vector(), Matrix()):
             self.error(f'{variable_type} is not subscriptable', node.variable.lineno)
 
         for index in node.indices:
             index_type = self.visit(index).type
-            if not isinstance(index_type, (Unknown, Int, Range)):
-                self.error('index must be int or range', index.lineno)
+            if index_type != Union(Int(), Range(), Unknown()):
+                self.error(f'index must be int or range, not {index_type}', index.lineno)
 
         return Symbol(type=Unknown())  # TODO: detect row, column or cell
 
@@ -180,38 +191,36 @@ class TypeChecker(NodeVisitor):
         left_type = left_symbol.type
         right_type = right_symbol.type
 
-        if isinstance(left_type, Unknown) or isinstance(right_type, Unknown):
+        if left_type == Unknown() or right_type == Unknown():
             return Symbol(type=Unknown())
 
-        if node.op == '+' and isinstance(left_type, String) and isinstance(right_type, String):
+        if node.op == '+' and left_type == String() and right_type == String():
             return Symbol(type=String())
 
-        if node.op == '*' and isinstance(left_type, String) and isinstance(right_type, Int):
+        if node.op == '*' and left_type == String() and right_type == Int():
             return Symbol(type=String())
 
         if node.op in ('+', '-', '*', '/'):
-            if isinstance(left_type, Int) and isinstance(right_type, Int):
+            if left_type == Int() and right_type == Int():
                 return Symbol(type=Int())  # TODO: perform operations on constant operands?
 
-            if isinstance(left_type, (Int, Float)) and isinstance(right_type, (Int, Float)):
+            if left_type == Union(Int(), Float()) and right_type == Union(Int(), Float()):
                 return Symbol(type=Float())
 
         if node.op in ('.+', '.-', '.*', './'):
-            if isinstance(left_type, Vector) and isinstance(right_type, Vector):
+            if left_type == Vector() and right_type == Vector():
                 if left_type != right_type:
                     self.error(f'vectors have different length ({left_type.length} vs. {right_type.length})', node.left.lineno)
                     return Symbol(type=Vector())
                 else:
                     return Symbol(type=Vector(length=left_type.length))
 
-            if isinstance(left_type, Matrix) and isinstance(right_type, Matrix):
+            if left_type == Matrix() and right_type == Matrix():
                 if left_type != right_type:
                     self.error('matrices have different shape', node.left.lineno)
                     return Symbol(type=Matrix())
                 else:
                     return Symbol(type=Matrix(rows=left_type.rows, cols=left_type.cols))
-
-                # TODO: manually check number of rows and columns, leave if they are the same
 
         self.error(f'cannot perform {left_type} {node.op} {right_type}', node.left.lineno)
         return Symbol(type=Unknown())
@@ -220,18 +229,18 @@ class TypeChecker(NodeVisitor):
         expr_symbol = self.visit(node.expr)
         expr_type = expr_symbol.type
 
-        if isinstance(expr_type, Unknown):
+        if expr_type == Unknown():
             return expr_symbol
 
         if node.op == '-':
-            if isinstance(expr_type, (Int, Float, Vector, Matrix)):
+            if expr_type == Union(Int(), Float(), Vector(), Matrix()):
                 return expr_symbol
                 # TODO: handle non-negativity property?
 
             self.error(f'cannot perform: {node.op}{expr_type}', node.expr.lineno)
 
         if node.op == "'":
-            if isinstance(expr_type, Matrix):
+            if expr_type == Matrix():
                 rows, cols = expr_type.cols, expr_type.rows
                 return Symbol(type=Matrix(rows=rows, cols=cols))
 
@@ -255,19 +264,17 @@ class TypeChecker(NodeVisitor):
             element_type = self.visit(element).type
             if element_type != Union(Int(), Float(), Vector()):
                 self.error(f'vector element must be int or float, not {element_type}', element.lineno)
-            elements_types.append(element_type.__class__)
+            elements_types.append(element_type)
 
-        if Matrix in elements_types:
-            self.error('only 2D matrix supported', element.lineno)
-            return Symbol(type=Matrix(rows=len(node.elements)))
+        # if any(map(Matrix().__eq__, elements_types)):
+        #     self.error('only 2D matrices are supported', element.lineno)
+        #     return Symbol(type=Matrix(rows=len(node.elements)))
 
-        if Vector in elements_types:
-            if elements_types == [Vector] * len(elements_types):  # TODO: seriously, fix that
-                lengths = {len(element.elements) for element in node.elements}
-                if len(lengths) > 1:
-                    self.error('matrix rows must be the same length', node.elements[0].lineno)
-            else:
+        if Vector() in elements_types:
+            if not all(map(Vector().__eq__, elements_types)):
                 self.error('matrix rows must be vectors', node.elements[0].lineno)
+            elif len(set(map(lambda vector: vector.length, elements_types))) > 1:
+                self.error('matrix rows must be the same length', node.elements[0].lineno)
 
             return Symbol(type=Matrix(rows=len(node.elements), cols=len(node.elements[0].elements)))
 
