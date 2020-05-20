@@ -17,6 +17,6 @@ def test_variable_matrix_different_shape():
     text = '''
     x = eye(5);
     y = eye(8);
-    z = x + y;
+    z = x .+ y;
     '''
     assert typechecker_fails(text)

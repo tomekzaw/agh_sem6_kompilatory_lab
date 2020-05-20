@@ -24,7 +24,7 @@ from utils import typechecker_passes, typechecker_fails
     """,
 
     """
-    A = ones(3)
+    A = ones(3);
     X = zeros(A[1, 3]);
     """,
 ))
@@ -59,13 +59,13 @@ def test_matrix_functions_args_fail(text):
     assert typechecker_fails(text)
 
 
-# @pytest.mark.parametrize('text', (
-#     "X = eye(-1);",
+@pytest.mark.parametrize('text', (
+    "X = eye(-1);",
 
-#     """
-#     n = -1;
-#     X = eye(n);
-#     """
-# ))
-# def test_matrix_function_args_negative(text):
-#     assert typechecker_fails(text)
+    """
+    n = -1;
+    X = eye(n);
+    """
+))
+def test_matrix_function_args_negative(text):
+    assert typechecker_fails(text)
