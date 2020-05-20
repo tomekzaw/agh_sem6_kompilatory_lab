@@ -6,7 +6,9 @@ from abc import ABC
 
 class Type(ABC):
     def __repr__(self):
-        return f'{self.__class__.__name__.lower()}'
+        name = f'{self.__class__.__name__.lower()}'
+        params = ', '.join(str(p) if p is not None else '?' for p in self.__dict__.values())
+        return name + (f'<{params}>' if self.__dict__ else '')
 
     def __eq__(self, other):
         # if isinstance(self, Unknown) or isinstance(other, Unknown):
@@ -23,7 +25,9 @@ class Type(ABC):
             return False
 
         for key in self.__dict__.keys() & other.__dict__.keys():
-            if self.__dict__[key] is not None and other.__dict__[key] is not None and self.__dict__[key] != other.__dict__[key]:
+            param1 = self.__dict__[key]
+            param2 = other.__dict__[key]
+            if param1 is not None and param2 is not None and param1 != param2:
                 return False
 
         return True
@@ -49,12 +53,12 @@ class Range(Type):
     pass
 
 
-@dataclass(eq=False)
+@dataclass(eq=False, repr=False)
 class Vector(Type):
     length: Optional[int] = None
 
 
-@dataclass(eq=False)
+@dataclass(eq=False, repr=False)
 class Matrix(Type):
     rows: Optional[int] = None
     cols: Optional[int] = None
