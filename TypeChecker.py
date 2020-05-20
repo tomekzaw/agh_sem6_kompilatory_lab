@@ -132,7 +132,6 @@ class TypeChecker(NodeVisitor):
                         self.error(f'cannot overwrite loop variable {variable.name}', variable.lineno)
                     elif variable_symbol.type != right_symbol.type:
                         self.error(f'cannot overwrite variable {variable.name} of type {variable_symbol.type} with {right_symbol.type}', variable.lineno)
-                    self.table.put(variable.name, Symbol(type=Unknown()))
                 else:
                     self.table.put(variable.name, right_symbol)
 
@@ -217,7 +216,7 @@ class TypeChecker(NodeVisitor):
 
             if left_type == Matrix() and right_type == Matrix():
                 if left_type != right_type:
-                    self.error('matrices have different shape', node.left.lineno)
+                    self.error(f'matrices have different shape ({left_type} vs. {right_type})', node.left.lineno)
                     return Symbol(type=Matrix())
                 else:
                     return Symbol(type=Matrix(rows=left_type.rows, cols=left_type.cols))
@@ -233,9 +232,10 @@ class TypeChecker(NodeVisitor):
             return expr_symbol
 
         if node.op == '-':
-            if expr_type == Union(Int(), Float(), Vector(), Matrix()):
+            if expr_type == Union(Int(), Float()):
+                return Symbol(type=expr_type, value=-expr_symbol.value)
+            elif expr_type == Union(Vector(), Matrix()):
                 return expr_symbol
-                # TODO: handle non-negativity property?
 
             self.error(f'cannot perform: {node.op}{expr_type}', node.expr.lineno)
 
