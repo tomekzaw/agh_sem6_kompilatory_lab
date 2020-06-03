@@ -40,3 +40,9 @@ if __name__ == '__main__':
     typeChecker.visit(ast)
     if not typeChecker.errorok:
         raise SystemExit
+
+    ast.accept(Interpreter())
+    # in future
+    # ast.accept(OptimizationPass1())
+    # ast.accept(OptimizationPass2())
+    # ast.accept(CodeGenerator())
