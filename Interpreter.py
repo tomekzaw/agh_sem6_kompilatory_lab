@@ -1,7 +1,4 @@
-import AST
-import SymbolTable
-from Memory import *
-from Exceptions import *
+from AST import *
 from visit import *
 import sys
 
@@ -13,23 +10,29 @@ class Interpreter(object):
     def visit(self, node):
         pass
 
-    @when(AST.BinOp)
-    def visit(self, node):
-        r1 = node.left.accept(self)
-        r2 = node.right.accept(self)
-        # try sth smarter than:
-        # if(node.op=='+') return r1+r2
-        # elsif(node.op=='-') ...
-        # but do not use python eval
+    # @when(AST.IntNum)
+    # def visit(self, node):
+    #     return node.value
 
-    @when(AST.Assignment)
-    def visit(self, node):
-        pass
+    # @when(AST.BinExpr)
+    # def visit(self, node):
+    #     left = node.left.accept(self)
+    #     right = node.right.accept(self)
+    #     if node.op == '/' and right == 0:
+    #         raise RuntimeError('Division by zero')
+    #     return {
+    #         '+': operator.add,
+    #         '-': operator.sub,
+    #         '*': operator.mul,
+    #         '/': operator.div,
+    #     }[node.op](left, right)
 
-    # simplistic while loop interpretation
-    @when(AST.WhileInstr)
+    # @when(AST.Assignment)
+    # def visit(self, node):
+    #     value = node.right.accept(self)
+    #     print(f'assignment: {value}')
+
+    @when(Program)
     def visit(self, node):
-        r = None
-        while node.cond.accept(self):
-            r = node.body.accept(self)
-        return r
+        print('visiting Program')
+        # node.instructions.accept(self)

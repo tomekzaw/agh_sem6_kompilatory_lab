@@ -10,6 +10,9 @@ class Node(object):
         obj.lineno = lexer.lineno
         return obj
 
+    def accept(self, visitor):
+        visitor.visit(self)
+
     # @property
     # def children(self):
     #     return self.__dict__.values()

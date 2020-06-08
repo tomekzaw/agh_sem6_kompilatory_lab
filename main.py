@@ -1,9 +1,10 @@
 import sys
+from itertools import count
 from scanner import lexer, find_column  # noqa
 from Mparser import parser
 from TreePrinter import TreePrinter  # noqa
 from TypeChecker import TypeChecker
-from itertools import count
+from Interpreter import Interpreter
 
 
 def read():
@@ -42,7 +43,3 @@ if __name__ == '__main__':
         raise SystemExit
 
     ast.accept(Interpreter())
-    # in future
-    # ast.accept(OptimizationPass1())
-    # ast.accept(OptimizationPass2())
-    # ast.accept(CodeGenerator())
