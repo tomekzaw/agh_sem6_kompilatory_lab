@@ -27,7 +27,7 @@ class Interpreter:
             node.instructions.accept(self)
         except ReturnValueException as exc:
             exit_code = exc.value
-            if not isinstance(exit_code, int):
+            if not isinstance(exit_code, int):  # invalid exit code
                 exit_code = -1
             sys.exit(exit_code)
         except RuntimeError as err:
@@ -50,13 +50,19 @@ class Interpreter:
         variable_name = node.variable.name
         range_ = node.range_.accept(self)
         start, end = range_.start, range_.stop
-
-        self.memory_stack.push(Memory('for'))
-        self.memory_stack.insert(variable_name, None)
-        for i in range(start, end+1):
-            self.memory_stack.set(variable_name, i)
-            node.instruction.accept(self)
-        self.memory_stack.pop()
+        try:
+            self.memory_stack.push(Memory('for'))
+            self.memory_stack.insert(variable_name, None)
+            for i in range(start, end+1):
+                self.memory_stack.set(variable_name, i)
+                try:
+                    node.instruction.accept(self)
+                except ContinueException:
+                    pass
+        except BreakException:
+            pass
+        finally:
+            self.memory_stack.pop()
 
     @when(Range)
     def visit(self, node):
@@ -66,8 +72,14 @@ class Interpreter:
 
     @when(While)
     def visit(self, node):
-        while node.condition.accept(self):
-            node.instruction.accept(self)
+        try:
+            while node.condition.accept(self):
+                try:
+                    node.instruction.accept(self)
+                except ContinueException:
+                    pass
+        except BreakException:
+            pass
 
     @when(Condition)
     def visit(self, node):
