@@ -1,32 +1,42 @@
 class Memory:
     def __init__(self, name):
-        pass
+        self.name = name
+        self.symbols = {}
 
     def has_key(self, name):
-        pass
+        return name in self.symbols
 
     def get(self, name):
-        pass
+        return self.symbols[name]
 
     def put(self, name, value):
-        pass
+        self.symbols[name] = value
 
 
 class MemoryStack:
     def __init__(self, memory=None):
-        pass
+        if memory is None:
+            memory = Memory('global')
+        self.stack = [memory]
 
     def get(self, name):
-        pass
+        for memory in self.stack:
+            if memory.has_key(name):
+                return memory.get(name)
+        raise RuntimeError(f'{name} not declared')
 
     def insert(self, name, value):
-        pass
+        self.stack[-1].put(name, value)
 
     def set(self, name, value):
-        pass
+        for memory in reversed(self.stack):
+            if memory.has_key(name):
+                memory.put(name, value)
+                return
+        raise RuntimeError(f'{name} not declared')
 
     def push(self, memory):
-        pass
+        self.stack.append(memory)
 
     def pop(self):
-        pass
+        self.stack.pop()

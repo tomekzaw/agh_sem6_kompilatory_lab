@@ -11,7 +11,7 @@ class Node(object):
         return obj
 
     def accept(self, visitor):
-        visitor.visit(self)
+        return visitor.visit(self)
 
     # @property
     # def children(self):
