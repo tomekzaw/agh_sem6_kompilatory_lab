@@ -173,7 +173,7 @@ class TypeChecker(NodeVisitor):
     def visit_Reference(self, node, as_rvalue=True):
         variable_type = self.visit(node.variable).type
 
-        if variable_type != Union(Vector(), Matrix()):
+        if variable_type != Union(Vector(), Matrix(), Unknown()):
             self.error(f'{variable_type} is not subscriptable', node.variable.lineno)
 
         if variable_type == Vector() and len(node.indices) != 1:
