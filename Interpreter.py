@@ -73,6 +73,7 @@ class Interpreter:
     @when(While)
     def visit(self, node):
         try:
+            self.memory_stack.push(Memory('while'))
             while node.condition.accept(self):
                 try:
                     node.instruction.accept(self)
@@ -80,6 +81,8 @@ class Interpreter:
                     pass
         except BreakException:
             pass
+        finally:
+            self.memory_stack.pop()
 
     @when(Condition)
     def visit(self, node):
@@ -121,7 +124,7 @@ class Interpreter:
 
         name = node.left.name
         value = node.right.accept(self)
-        self.memory_stack.insert(name, value)
+        self.memory_stack.set(name, value)
 
     @when(Variable)
     def visit(self, node):
@@ -145,7 +148,6 @@ class Interpreter:
             '*': operator.mul,
             '/': operator.truediv,
         }[node.op](left, right)
-
 
     @when(UnaryExpr)
     def visit(self, node):
@@ -174,20 +176,20 @@ class Interpreter:
 
     @when(Eye)
     def visit(self, node):
-        rows = node.rows
-        cols = node.cols if node.cols is not None else rows
+        rows = node.rows.accept(self)
+        cols = node.cols.accept(self) if node.cols is not None else rows
         return np.eye(rows, cols)
 
     @when(Zeros)
     def visit(self, node):
-        rows = node.rows
-        cols = node.cols if node.cols is not None else rows
+        rows = node.rows.accept(self)
+        cols = node.cols.accept(self) if node.cols is not None else rows
         return np.zeros((rows, cols))
 
     @when(Ones)
     def visit(self, node):
-        rows = node.rows
-        cols = node.cols if node.cols is not None else rows
+        rows = node.rows.accept(self)
+        cols = node.cols.accept(self) if node.cols is not None else rows
         return np.ones((rows, cols))
 
     @when(Error)

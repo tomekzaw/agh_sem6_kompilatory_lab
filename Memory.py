@@ -23,17 +23,23 @@ class MemoryStack:
         for memory in self.stack:
             if memory.has_key(name):
                 return memory.get(name)
-        raise RuntimeError(f'{name} not declared')
+        raise KeyError(f'{name} not found')
 
     def insert(self, name, value):
         self.stack[-1].put(name, value)
 
-    def set(self, name, value):
+    def update(self, name, value):
         for memory in reversed(self.stack):
             if memory.has_key(name):
                 memory.put(name, value)
                 return
-        raise RuntimeError(f'{name} not declared')
+        raise KeyError(f'{name} not found')
+
+    def set(self, name, value):
+        try:
+            self.update(name, value)
+        except KeyError:
+            self.insert(name, value)
 
     def push(self, memory):
         self.stack.append(memory)
