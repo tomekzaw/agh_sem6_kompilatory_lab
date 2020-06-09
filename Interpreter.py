@@ -69,18 +69,17 @@ class Interpreter:
         range_ = node.range_.accept(self)
         start, end = range_.start, range_.stop
         try:
-            self.memory_stack.push(Memory('for'))
-            self.memory_stack.insert(variable_name, None)
             for i in range(start, end + 1):
-                self.memory_stack.set(variable_name, i)
                 try:
+                    self.memory_stack.push(Memory('for', {variable_name: i}))
+                    # self.memory_stack.insert(variable_name, i)
                     node.instruction.accept(self)
                 except ContinueException:
                     pass
+                finally:
+                    self.memory_stack.pop()
         except BreakException:
             pass
-        finally:
-            self.memory_stack.pop()
 
     @when(Range)
     def visit(self, node):
@@ -91,16 +90,16 @@ class Interpreter:
     @when(While)
     def visit(self, node):
         try:
-            self.memory_stack.push(Memory('while'))
             while node.condition.accept(self):
                 try:
+                    self.memory_stack.push(Memory('while'))
                     node.instruction.accept(self)
                 except ContinueException:
                     pass
+                finally:
+                    self.memory_stack.pop()
         except BreakException:
             pass
-        finally:
-            self.memory_stack.pop()
 
     @when(Condition)
     def visit(self, node):
