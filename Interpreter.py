@@ -9,6 +9,20 @@ from Exceptions import *
 sys.setrecursionlimit(10000)
 
 
+def eval_binexpr(op, left, right):
+    """
+    Calculates value of binary expression.
+    This function is utilized both in BinExpr node (+, -, *, /)
+    and Assignment node for compound assignments (+=, -=, *=, /=).
+    """
+    return {
+        '+': operator.add,  # works for strings and np.arrays as well
+        '-': operator.sub,
+        '*': operator.mul,
+        '/': operator.truediv,
+    }[op](left, right)
+
+
 class Interpreter:
     def __init__(self):
         self.memory_stack = MemoryStack()
@@ -27,11 +41,11 @@ class Interpreter:
             node.instructions.accept(self)
         except ReturnValueException as exc:
             exit_code = exc.value
-            if not isinstance(exit_code, int):  # invalid exit code
+            if not isinstance(exit_code, int):  # invalid exit code (must be int)
                 exit_code = -1
             sys.exit(exit_code)
         except RuntimeError as err:
-            print(f'Runtime error: {err}')
+            print(f'*** Runtime error: {err} ***')
 
     @when(Instructions)
     def visit(self, node):
@@ -53,7 +67,7 @@ class Interpreter:
         try:
             self.memory_stack.push(Memory('for'))
             self.memory_stack.insert(variable_name, None)
-            for i in range(start, end+1):
+            for i in range(start, end + 1):
                 self.memory_stack.set(variable_name, i)
                 try:
                     node.instruction.accept(self)
@@ -119,11 +133,16 @@ class Interpreter:
         if not isinstance(node.left, Variable):
             raise NotImplementedError('Reference assignments not implemented yet')  # TODO implement reference assignments
 
-        if node.op in ('+=', '-=', '*=', '/='):
-            raise NotImplementedError('Compound assignments not implemented yet')  # TODO implement compound assignments
-
         name = node.left.name
-        value = node.right.accept(self)
+
+        if node.op == '=':
+            value = node.right.accept(self)
+        else:  # compound assigment (+=, -=, *=, /=)
+            left = self.memory_stack.get(name)
+            right = node.right.accept(self)
+            op = node.op[0]
+            value = eval_binexpr(op, left, right)
+
         self.memory_stack.set(name, value)
 
     @when(Variable)
@@ -142,19 +161,14 @@ class Interpreter:
         right = node.right.accept(self)
         if node.op == '/' and right == 0:
             raise RuntimeError('Division by zero')
-        return {
-            '+': operator.add,
-            '-': operator.sub,
-            '*': operator.mul,
-            '/': operator.truediv,
-        }[node.op](left, right)
+        return eval_binexpr(node.op, left, right)
 
     @when(UnaryExpr)
     def visit(self, node):
         expr = node.expr.accept(self)
         return {
             '-': operator.neg,
-            "'": lambda x: x.T,
+            "'": np.transpose,
         }[node.op](expr)
 
     @when(IntNum)
@@ -195,3 +209,16 @@ class Interpreter:
     @when(Error)
     def visit(self, node):
         raise RuntimeError(str(node))
+
+# TODO: readline, int
+# TODO: error "singular_matrix"
+# TODO: functions?
+# TODO: import
+# TODO: sleep 1;
+# TODO: optimization pass - independent iterations
+# TODO: reference indices length in typechecker
+# TODO: compress @when(IntNum, FloatNum, String) into @when(Constant)
+# TODO: compress @when(Eye, Zeros, Ones) into @when(MatrixSpecialFunction)
+# TODO: #!/usr/bin/env python3
+# TODO: break 2; continue 3;
+# TODO: condition and, or, xor, not

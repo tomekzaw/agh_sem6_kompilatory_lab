@@ -1,7 +1,11 @@
+from dataclasses import dataclass, field
+from typing import List, Dict, Any
+
+
+@dataclass
 class Memory:
-    def __init__(self, name):
-        self.name = name
-        self.symbols = {}
+    name: str
+    symbols: Dict[str, Any] = field(default_factory=dict)
 
     def has_key(self, name):
         return name in self.symbols
@@ -13,15 +17,13 @@ class Memory:
         self.symbols[name] = value
 
 
+@dataclass
 class MemoryStack:
-    def __init__(self, memory=None):
-        if memory is None:
-            memory = Memory('global')
-        self.stack = [memory]
+    stack: List[Memory] = field(default_factory=lambda: [Memory('global')])
 
     def get(self, name):
         for memory in self.stack:
-            if memory.has_key(name):
+            if memory.has_key(name):  # noqa
                 return memory.get(name)
         raise KeyError(f'{name} not found')
 
@@ -30,7 +32,7 @@ class MemoryStack:
 
     def update(self, name, value):
         for memory in reversed(self.stack):
-            if memory.has_key(name):
+            if memory.has_key(name):  # noqa
                 memory.put(name, value)
                 return
         raise KeyError(f'{name} not found')
