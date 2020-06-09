@@ -176,6 +176,12 @@ class TypeChecker(NodeVisitor):
         if variable_type != Union(Vector(), Matrix()):
             self.error(f'{variable_type} is not subscriptable', node.variable.lineno)
 
+        if variable_type == Vector() and len(node.indices) != 1:
+            self.error(f'reference to {variable_type} must have exactly one index', node.variable.lineno)
+
+        if variable_type == Matrix() and len(node.indices) != 2:
+            self.error(f'reference to {variable_type} must have exactly two indices', node.variable.lineno)
+
         for index in node.indices:
             index_type = self.visit(index).type
             if index_type != Union(Int(), Range(), Unknown()):
