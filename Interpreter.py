@@ -12,14 +12,18 @@ sys.setrecursionlimit(10000)
 def eval_binexpr(op, left, right):
     """
     Calculates value of binary expression.
-    This function is utilized both in BinExpr node (+, -, *, /)
+    This function is utilized both in BinExpr node (+, -, *, /, .+, .-, .*, ./)
     and Assignment node for compound assignments (+=, -=, *=, /=).
     """
     return {
-        '+': operator.add,  # works for strings and np.arrays as well
+        '+': operator.add,  # works for `string + string` as well
         '-': operator.sub,
-        '*': operator.mul,
+        '*': operator.mul,  # works for `string * int` as well
         '/': operator.truediv,
+        '.+': np.add,
+        '.-': np.subtract,
+        '.*': np.multiply,
+        './': np.divide,
     }[op](left, right)
 
 
@@ -161,6 +165,7 @@ class Interpreter:
         right = node.right.accept(self)
         if node.op == '/' and right == 0:
             raise RuntimeError('Division by zero')
+        # matrix element-wise division returns NaNs or infs
         return eval_binexpr(node.op, left, right)
 
     @when(UnaryExpr)
@@ -209,16 +214,3 @@ class Interpreter:
     @when(Error)
     def visit(self, node):
         raise RuntimeError(str(node))
-
-# TODO: readline, int
-# TODO: error "singular_matrix"
-# TODO: functions?
-# TODO: import
-# TODO: sleep 1;
-# TODO: optimization pass - independent iterations
-# TODO: reference indices length in typechecker
-# TODO: compress @when(IntNum, FloatNum, String) into @when(Constant)
-# TODO: compress @when(Eye, Zeros, Ones) into @when(MatrixSpecialFunction)
-# TODO: #!/usr/bin/env python3
-# TODO: break 2; continue 3;
-# TODO: condition and, or, xor, not
