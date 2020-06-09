@@ -20,11 +20,11 @@ def eval_binexpr(op, left, right):
         '-': operator.sub,
         '*': operator.mul,  # works for `string * int` as well
         '/': operator.truediv,
-        '+=': operator.iadd,  # for compound assignments
+        '+=': operator.iadd,  # for compound assignments (in-place)
         '-=': operator.isub,
         '*=': operator.imul,
         '/=': operator.itruediv,
-        '.+': np.add,
+        '.+': np.add,  # for matrix element-wise operations
         '.-': np.subtract,
         '.*': np.multiply,
         './': np.divide,
