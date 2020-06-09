@@ -152,7 +152,10 @@ class TypeChecker(NodeVisitor):
                         self.error(f'cannot modify value of loop variable {variable_name}', variable_node.lineno)
 
                     if variable_symbol.type != modifier_symbol.type:
-                        self.error(f'cannot modify variable {variable_name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
+                        if variable_symbol.type == String() and modifier_symbol.type == Int():
+                            pass
+                        else:
+                            self.error(f'cannot modify variable {variable_name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
 
                 except KeyError:
                     self.error(f'variable {variable_name} not defined', variable_node.lineno)
