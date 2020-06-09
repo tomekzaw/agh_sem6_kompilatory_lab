@@ -20,6 +20,10 @@ def eval_binexpr(op, left, right):
         '-': operator.sub,
         '*': operator.mul,  # works for `string * int` as well
         '/': operator.truediv,
+        '+=': operator.iadd,  # for compound assignments
+        '-=': operator.isub,
+        '*=': operator.imul,
+        '/=': operator.itruediv,
         '.+': np.add,
         '.-': np.subtract,
         '.*': np.multiply,
@@ -30,6 +34,9 @@ def eval_binexpr(op, left, right):
 class Interpreter:
     def __init__(self):
         self.memory_stack = MemoryStack()
+
+    def error(self, message: str, lineno: int):
+        raise RuntimeError(f'{message} (line {lineno})')
 
     @on('node')
     def visit(self, node):
@@ -85,7 +92,7 @@ class Interpreter:
     def visit(self, node):
         start = node.start.accept(self)
         end = node.end.accept(self)
-        return slice(start, end)  # for references, for for-loop will be converted to range
+        return slice(start, end)  # works nice for references, but has to be converted into range when used as for-loop iterator
 
     @when(While)
     def visit(self, node):
@@ -133,20 +140,31 @@ class Interpreter:
 
     @when(Assignment)
     def visit(self, node):
-        if not isinstance(node.left, Variable):
-            raise NotImplementedError('Reference assignments not implemented yet')  # TODO implement reference assignments
+        right = node.right.accept(self)
 
-        name = node.left.name
+        if isinstance(node.left, Variable):
+            name = node.left.name
+            if node.op == '=':  # simple assignment
+                value = right
+            else:  # compound assigment (+=, -=, *=, /=)
+                left = self.memory_stack.get(name)
+                value = eval_binexpr(node.op[0], left, right)
+            self.memory_stack.set(name, value)
 
-        if node.op == '=':
-            value = node.right.accept(self)
-        else:  # compound assigment (+=, -=, *=, /=)
-            left = self.memory_stack.get(name)
-            right = node.right.accept(self)
-            op = node.op[0]
-            value = eval_binexpr(op, left, right)
-
-        self.memory_stack.set(name, value)
+        else:  # Reference
+            variable_name = node.left.variable.name
+            variable_value = self.memory_stack.get(variable_name)
+            if len(variable_value.shape) != len(node.left.indices):
+                self.error(f'invalid number of indices for {variable_name}', node.lineno)
+            indices = tuple(index.accept(self) for index in node.left.indices)
+            try:
+                if node.op == '=':  # simple assignment
+                    variable_value[indices] = right
+                else:  # compound assigment (+=, -=, *=, /=)
+                    eval_binexpr(node.op, variable_value[indices], right)
+            except ValueError:
+                # TODO: manually check shapes before
+                self.error(f'invalid assignment to reference', node.lineno)
 
     @when(Variable)
     def visit(self, node):  # as rvalue only
@@ -154,7 +172,10 @@ class Interpreter:
 
     @when(Reference)
     def visit(self, node):  # as rvalue only
-        variable_value = self.memory_stack.get(node.variable.name)
+        variable_name = node.variable.name
+        variable_value = self.memory_stack.get(variable_name)
+        if len(variable_value.shape) != len(node.indices):
+            self.error(f'invalid number of indices for {variable_name}', node.lineno)
         indices = tuple(index.accept(self) for index in node.indices)
         return variable_value[indices]
 
@@ -163,7 +184,7 @@ class Interpreter:
         left = node.left.accept(self)
         right = node.right.accept(self)
         if node.op == '/' and right == 0:
-            raise RuntimeError('Division by zero')
+            self.error('division by zero', node.lineno)
         # matrix element-wise division returns NaNs or infs
         return eval_binexpr(node.op, left, right)
 
@@ -212,4 +233,4 @@ class Interpreter:
 
     @when(Error)
     def visit(self, node):
-        raise RuntimeError(str(node))
+        raise self.error(str(node), node.lineno)
