@@ -146,14 +146,14 @@ class Interpreter:
         self.memory_stack.set(name, value)
 
     @when(Variable)
-    def visit(self, node):
-        # as rvalue only
+    def visit(self, node):  # as rvalue only
         return self.memory_stack.get(node.name)
 
     @when(Reference)
-    def visit(self, node):
-        # as rvalue only
-        raise NotImplementedError('References not implemented yet')  # TODO implement references
+    def visit(self, node):  # as rvalue only
+        variable_value = self.memory_stack.get(node.variable.name)
+        indices = tuple(index.accept(self) for index in node.indices)
+        return variable_value[indices]
 
     @when(BinExpr)
     def visit(self, node):
