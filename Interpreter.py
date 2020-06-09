@@ -145,6 +145,8 @@ class Interpreter:
         if isinstance(node.left, Variable):
             name = node.left.name
             if node.op == '=':  # simple assignment
+                if isinstance(right, np.ndarray):
+                    right = right.copy()
                 value = right
             else:  # compound assigment (+=, -=, *=, /=)
                 left = self.memory_stack.get(name)

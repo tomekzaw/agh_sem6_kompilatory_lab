@@ -2,15 +2,15 @@
 
 ## Usage
 ```bash
-python main.py examples/fib.m
+python main.py examples/fibonacci.m
 ```
 Linux:
 ```bash
-cat examples/fib.m | python main.py
+cat examples/fibonacci.m | python main.py
 ```
 Windows:
 ```bash
-type examples\fib.m | python main.py
+type examples\fibonacci.m | python main.py
 ```
 
 ```bash

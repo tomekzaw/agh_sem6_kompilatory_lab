@@ -133,7 +133,8 @@ class TypeChecker(NodeVisitor):
                     elif variable_symbol.type != right_symbol.type:
                         self.error(f'cannot overwrite variable {variable.name} of type {variable_symbol.type} with {right_symbol.type}', variable.lineno)
                 else:
-                    self.table.put(variable.name, right_symbol)
+                    symbol = Symbol(type=right_symbol.type, value=right_symbol.value)
+                    self.table.put(variable.name, symbol)
 
             elif isinstance(node.left, AST.Reference):
                 self.visit(node.left, as_rvalue=False)
