@@ -18,7 +18,7 @@ def eval_binexpr(op, left, right):
     return {
         '+': operator.add,  # works for `string + string` as well
         '-': operator.sub,
-        '*': operator.mul,  # works for `string * int` as well
+        '*': np.dot if isinstance(left, np.ndarray) and isinstance(right, np.ndarray) else operator.mul,  # works for `string * int` as well
         '/': operator.truediv,
         '+=': operator.iadd,  # for compound assignments (in-place)
         '-=': operator.isub,

@@ -202,8 +202,25 @@ class TypeChecker(NodeVisitor):
         if node.op == '+' and left_type == String() and right_type == String():
             return Symbol(type=String())
 
-        if node.op == '*' and left_type == String() and right_type == Int():
-            return Symbol(type=String())
+        if node.op == '*':
+            if left_type == String() and right_type == Int():
+                return Symbol(type=String())
+
+            if left_type == Vector() and right_type == Vector():
+                if left_type != right_type:
+                    self.error(f'cannot calculate dot product because vectors have different length ({left_type.length} vs. {right_type.length})', node.left.lineno)
+                return Symbol(type=Float())
+
+            if left_type == Matrix() and right_type == Matrix():
+                if left_type.cols is not None and right_type.rows is not None and left_type.cols != right_type.rows:
+                    self.error(f'cannot multiply {left_type} by {right_type}', node.left.lineno)
+                return Symbol(type=Matrix(rows=left_type.rows, cols=right_type.cols))
+
+            if left_type == Union(Int(), Float()):
+                return right_symbol
+
+            if right_type == Union(Int(), Float()):
+                return left_symbol
 
         if node.op in ('+', '-', '*', '/'):
             if left_type == Int() and right_type == Int():
