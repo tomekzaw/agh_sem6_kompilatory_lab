@@ -2,15 +2,15 @@
 
 ## Usage
 ```bash
-python main.py fib.m
+python main.py examples/fib.m
 ```
 Linux:
 ```bash
-cat fib.m | python main.py
+cat examples/fib.m | python main.py
 ```
 Windows:
 ```bash
-type fib.m | python main.py
+type examples\fib.m | python main.py
 ```
 
 ```bash
