@@ -79,15 +79,15 @@ from Interpreter import Interpreter
     ('ones(3, 4)', np.ones((3, 4))),
 ))
 def test_memory_value(text, expected_value):
-    text = f'a = {text};'
+    text = f'foo = {text};'
 
     ast = parser.parse(text, lexer=lexer)
     interpreter = Interpreter()
     ast.accept(interpreter)
 
-    a = interpreter.memory_stack.stack[0].symbols['a']
+    foo = interpreter.memory_stack.stack[0].symbols['foo']
     if isinstance(expected_value, np.ndarray):
-        assert np.array_equal(a, expected_value)
+        assert np.array_equal(foo, expected_value)
     else:
-        assert a == expected_value
-        assert type(a) == type(expected_value)
+        assert foo == expected_value
+        assert type(foo) == type(expected_value)
