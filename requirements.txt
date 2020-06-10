@@ -1,3 +1,4 @@
 ply
-pytest
 numpy
+pytest
+flake8
