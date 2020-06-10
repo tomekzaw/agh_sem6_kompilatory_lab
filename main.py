@@ -43,6 +43,3 @@ if __name__ == '__main__':
         raise SystemExit
 
     ast.accept(Interpreter())
-    # interpreter = Interpreter()
-    # ast.accept(interpreter)
-    # print(interpreter.memory_stack.stack[0].symbols)

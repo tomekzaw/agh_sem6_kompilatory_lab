@@ -32,8 +32,9 @@ def eval_binexpr(op, left, right):
 
 
 class Interpreter:
-    def __init__(self):
+    def __init__(self, catch_runtime_errors=True):
         self.memory_stack = MemoryStack()
+        self.catch_runtime_errors = catch_runtime_errors
 
     def error(self, message: str, lineno: int):
         raise RuntimeError(f'{message} (line {lineno})')
@@ -56,7 +57,10 @@ class Interpreter:
                 exit_code = -1
             sys.exit(exit_code)
         except RuntimeError as err:
-            print(f'*** Runtime error: {err} ***')
+            if self.catch_runtime_errors:
+                print(f'*** Runtime error: {err} ***')
+            else:
+                raise err  # for testing purposes
 
     @when(Instructions)
     def visit(self, node):
@@ -166,7 +170,7 @@ class Interpreter:
                     eval_binexpr(node.op, variable_value[indices], right)
             except ValueError:
                 # TODO: manually check shapes before
-                self.error(f'invalid assignment to reference', node.lineno)
+                self.error('invalid assignment to reference', node.lineno)
 
     @when(Variable)
     def visit(self, node):  # as rvalue only
@@ -176,9 +180,17 @@ class Interpreter:
     def visit(self, node):  # as rvalue only
         variable_name = node.variable.name
         variable_value = self.memory_stack.get(variable_name)
-        if len(variable_value.shape) != len(node.indices):
+        shape = variable_value.shape
+        if len(shape) != len(node.indices):
             self.error(f'invalid number of indices for {variable_name}', node.lineno)
         indices = tuple(index.accept(self) for index in node.indices)
+        for i, (index, size) in enumerate(zip(indices, shape)):
+            if isinstance(index, slice):
+                index = index.stop
+            if index < 0:
+                self.error('negative index for axis {i}', node.indices[i].lineno)
+            if index > size:
+                self.error(f'index {index} out of bounds for axis {i} with size {size}', node.indices[i].lineno)
         return variable_value[indices]
 
     @when(BinExpr)
@@ -187,6 +199,12 @@ class Interpreter:
         right = node.right.accept(self)
         if node.op == '/' and right == 0:
             self.error('division by zero', node.lineno)
+        if node.op == '*':
+            if isinstance(left, str) and right < 0:
+                self.error('cannot repeat negative number of times', node.lineno)
+            if isinstance(left, np.ndarray) and isinstance(right, np.ndarray):
+                if left.shape[1] != right.shape[0]:
+                    self.error('cannot mutliply matrices with unmatching shapes', node.lineno)
         # matrix element-wise division returns NaNs or infs
         return eval_binexpr(node.op, left, right)
 
@@ -217,21 +235,27 @@ class Interpreter:
 
     @when(Eye)
     def visit(self, node):
-        rows = node.rows.accept(self)
-        cols = node.cols.accept(self) if node.cols is not None else rows
+        rows, cols = self._interpret_params(node, np.eye)
         return np.eye(rows, cols)
 
     @when(Zeros)
     def visit(self, node):
-        rows = node.rows.accept(self)
-        cols = node.cols.accept(self) if node.cols is not None else rows
+        rows, cols = self._interpret_params(node, np.eye)
         return np.zeros((rows, cols))
 
     @when(Ones)
     def visit(self, node):
-        rows = node.rows.accept(self)
-        cols = node.cols.accept(self) if node.cols is not None else rows
+        rows, cols = self._interpret_params(node, np.eye)
         return np.ones((rows, cols))
+
+    def _interpret_params(self, node, func):
+        rows = node.rows.accept(self)
+        if rows < 0:
+            self.error('negative number of rows is not allowed', node.rows.lineno)
+        cols = node.cols.accept(self) if node.cols is not None else rows
+        if cols < 0:
+            self.error('negative number of columns is not allowed', node.cols.lineno)
+        return rows, cols
 
     @when(Error)
     def visit(self, node):

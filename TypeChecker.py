@@ -227,7 +227,7 @@ class TypeChecker(NodeVisitor):
                 return left_symbol
 
         if node.op in ('+', '-', '*', '/'):
-            if left_type == Int() and right_type == Int():
+            if node.op != '/' and left_type == Int() and right_type == Int():
                 return Symbol(type=Int())  # TODO: perform operations on constant operands?
 
             if left_type == Union(Int(), Float()) and right_type == Union(Int(), Float()):
