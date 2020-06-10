@@ -110,6 +110,7 @@ class SymbolTable:
         while scope is not None:
             if name in scope.symbols:
                 scope.symbols[name] = symbol
+                return
             scope = scope.parent
         raise KeyError
 

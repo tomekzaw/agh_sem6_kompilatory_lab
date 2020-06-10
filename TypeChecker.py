@@ -158,6 +158,8 @@ class TypeChecker(NodeVisitor):
                         else:
                             self.error(f'cannot modify variable {variable_name} of type {variable_symbol.type} with {modifier_symbol.type}', variable_node.lineno)
 
+                    self.table.update(variable_name, Symbol(type=variable_symbol.type))
+
                 except KeyError:
                     self.error(f'variable {variable_name} not defined', variable_node.lineno)
 
