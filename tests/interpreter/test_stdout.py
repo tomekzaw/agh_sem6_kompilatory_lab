@@ -1,5 +1,4 @@
 import pytest
-import numpy as np
 from Mparser import parser
 from scanner import lexer
 from Interpreter import Interpreter
